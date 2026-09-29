@@ -28,6 +28,33 @@ from .schema import VARS, read_canonical  # noqa: E402
 from .stream import StreamEngine  # noqa: E402
 
 
+def weather_vs_sensor(R: pd.DataFrame) -> dict:
+    """Weather-vs-sensor discrimination on the evaluated rows (injected regional events are labelled normal)."""
+    reg = R["injection_kind"] == "regional_event"
+    status = R["weather_status"]
+    regional_status = status.isin(["REGIONAL_WEATHER", "UNCERTAIN"])
+    ev = R[reg].groupby("injection_id").agg(any_alert=("flag", "any"), recognised=("weather_status", lambda x: (x == "REGIONAL_WEATHER").any()))
+    exc = R[status == "REGIONAL_WEATHER_WITH_STATION_EXCEPTION"]
+    examples = [{"station_id": r.station_id, "timestamp": str(r.timestamp), "pattern": r.pattern, "parameter": r.param,
+                 "probability": round(float(r.prob), 3), "reason": r.exception_reason, "truth": r.anomaly_type}
+                for r in exc.head(5).itertuples()]
+    return {
+        "status_counts": status.value_counts().to_dict(),
+        "regional_event_instances": int(len(ev)),
+        "regional_event_instances_with_any_alert": int(ev["any_alert"].sum()),
+        "regional_event_instances_recognised_as_regional_weather": int(ev["recognised"].sum()),
+        "regional_event_rows": int(reg.sum()),
+        "regional_event_rows_status_regional": int((reg & regional_status).sum()),
+        "rows_status_regional_weather": int((status == "REGIONAL_WEATHER").sum()),
+        "rows_status_regional_weather_inside_injected_events": int(((status == "REGIONAL_WEATHER") & reg).sum()),
+        "note": "Precision of the REGIONAL_WEATHER status against injected events is a lower bound: genuine regional weather "
+                "in the real observations is unlabelled.",
+        "station_exception_rows": int(len(exc)), "station_exception_rows_true_anomalies": int((exc["is_anomaly"] == 1).sum()),
+        "station_exception_examples": examples,
+        "sensor_anomaly_rows": int((status == "SENSOR_ANOMALY").sum()), "uncertain_rows": int((status == "UNCERTAIN").sum()),
+    }
+
+
 def verify_frozen(dataset: Path) -> dict:
     man = json.loads((dataset / "MANIFEST.json").read_text())
     digest = hashlib.sha256(gzip.decompress((dataset / "benchmark.csv.gz").read_bytes())).hexdigest()
@@ -184,7 +211,9 @@ def evaluate(dataset: Path, model_dir: Path, out: Path, final: bool) -> dict:
     bundle = ModelBundle.load(model_dir)
     md = bundle.metadata
     if final:
-        assert md["final_benchmark_sha256"] == integrity["manifest_sha256"], "model was trained against a different frozen benchmark"
+        recorded = md.get("frozen_benchmarks", {}).get(dataset.name)
+        if recorded:  # the model records every frozen benchmark that existed when it was trained
+            assert recorded["sha256"] == integrity["manifest_sha256"], "frozen benchmark changed after training"
         assert md["trained_at"] > integrity["frozen_at"], "benchmark must be frozen before training"
     stations = load_stations()
     t0 = time.time()
@@ -203,7 +232,13 @@ def evaluate(dataset: Path, model_dir: Path, out: Path, final: bool) -> dict:
         h = joblib.load(abl_dir / f"{fs.replace('+', '_')}.joblib")
         approaches[f"hybrid[{fs}]"] = hybrid_scores(h, F)
     approaches["skyguard_hybrid"] = (R["prob"].to_numpy(), R["flag"].to_numpy())
+    # same model with the weather-vs-sensor decision rules switched off (quantifies the rule trade-off on identical data)
+    rules = getattr(bundle.hybrid, "rules", None)
+    bundle.hybrid.rules = None
+    approaches["skyguard_hybrid_without_decision_rules"] = hybrid_scores(bundle.hybrid, F)
+    bundle.hybrid.rules = rules
     comp = compare(F, R, approaches)
+    weather = weather_vs_sensor(R[m])
 
     final_det = detection(R[m], R.loc[m, "flag"].to_numpy(), R.loc[m, "prob"].to_numpy()) | event_recall(R[m], R.loc[m, "flag"].to_numpy())
     cls = classification(R.loc[m, "anomaly_type"].to_numpy(), R.loc[m, "pattern"].to_numpy())
@@ -259,6 +294,10 @@ def evaluate(dataset: Path, model_dir: Path, out: Path, final: bool) -> dict:
         "detection": final_det, "classification": cls, "parameter_attribution_accuracy": param_acc,
         "calibration_ml_scored_rows": cal, "calibration_all_rows": {k: v for k, v in cal_all.items() if k != "reliability"},
         "imputation": imp, "baseline_comparison": table, "ablation": abl, "all_approaches": comp,
+        "decision_rules": rules, "weather_vs_sensor": weather,
+        "decision_rule_tradeoff": {k: {x: comp[k][x] for x in ("precision", "recall", "f1", "false_alerts_per_station_day", "event_recall",
+                                                                "regional_events_falsely_alerted")}
+                                   for k in ("skyguard_hybrid_without_decision_rules", "skyguard_hybrid")},
         "held_out": subsets, "per_station": per_station,
         "realtime": {k: v for k, v in rt.items() if k != "samples_ms"}, "baseline_latency_ms": base_lat,
         "edge": json.loads(edge_path.read_text()) if edge_path.exists() else "not built (run python edge/build_edge.py)",

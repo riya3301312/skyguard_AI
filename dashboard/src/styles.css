@@ -107,3 +107,4 @@ footer { margin-top: 18px; }
   .ellipsis { max-width: 160px; }
   .feed th:nth-child(3), .feed td:nth-child(3) { display: none; }
 }
+.wvs { background: var(--panel2); border-radius: 6px; padding: 8px 10px; margin: 6px 0 10px; font-size: 13px; }

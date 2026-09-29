@@ -108,3 +108,19 @@ def test_final_evaluation_artifacts_complete():
         assert m["detection"][k] is not None
     assert {"macro_f1", "per_class", "confusion_matrix"} <= set(m["classification"])
     assert m["held_out"]["held_out_stations"]["n"] > 0
+
+
+@need_model
+def test_clean_station_no_false_drift_on_demo_window():
+    """Regression (SIH scenario A): the remote station VOPB carries no injected fault in the demo replay;
+    its live period, including the 2024-08-05 humidity swing that previously raised a false DRIFT, must not alert."""
+    stations = load_stations()
+    d = pd.read_csv(ROOT / "data" / "demo" / "sih_demo.csv")
+    d["timestamp"] = pd.to_datetime(d["timestamp"], utc=True)
+    v = d[d["station_id"] == "VOPB"].copy()
+    for c in ("latitude", "longitude", "altitude_m"):
+        v[c] = stations["VOPB"][c]
+    v["source"], v["quality_flag"] = "demo", "ok"
+    R = score_frame(v, {"VOPB": stations["VOPB"]}, ModelBundle.load(MODEL))
+    live = R[R["timestamp"] >= pd.Timestamp("2024-08-04T10:00Z")]
+    assert not live["flag"].any(), live.loc[live["flag"], ["timestamp", "pattern", "prob"]].to_dict("records")

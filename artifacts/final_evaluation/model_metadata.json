@@ -1,15 +1,116 @@
 {
   "model_name": "SkyGuard Hybrid",
-  "selected_variant": "temporal+multivariate+spatial",
-  "selection_rule": "max validation F1, tie -> min false alerts/station-day",
-  "validation_f1_by_variant": {
-    "temporal": 0.4807448159119763,
-    "temporal+multivariate": 0.550957546538101,
-    "temporal+spatial": 0.526500811249324,
-    "temporal+multivariate+spatial": 0.602400408580184,
-    "full": 0.6012412723041116
+  "selected_variant": "full",
+  "selection_rule": "validation: false alerts/station-day <= budget and regional-event alert share <= budget; maximise event recall, then F1",
+  "decision_rules": {
+    "confirm_persistent": true,
+    "k6": 1.5,
+    "c3": 0.5,
+    "max_shared": 0.5,
+    "regional_suppress": true,
+    "regional_min": 0.5
   },
-  "alert_threshold": 0.3499999999999999,
+  "validation_operating_point": {
+    "confirm_persistent": true,
+    "k6": 1.5,
+    "c3": 0.5,
+    "max_shared": 0.5,
+    "regional_suppress": true,
+    "regional_min": 0.5,
+    "threshold": 0.23,
+    "f1": 0.5494826213849827,
+    "fa_per_station_day": 0.1956521739130435,
+    "recall": 0.42895608947804476,
+    "event_recall": 0.8958837772397095,
+    "regional_events_alerted": 0.05555555555555555,
+    "feasible": true
+  },
+  "operating_point_rule": "max validation F1 subject to <= 0.2 false alerts per station-day (all approaches)",
+  "validation_f1_by_variant": {
+    "temporal": 0.4869493163927634,
+    "temporal+multivariate": 0.5145205479452056,
+    "temporal+spatial": 0.5254511176945866,
+    "temporal+multivariate+spatial": 0.58203125,
+    "full": 0.5494826213849827
+  },
+  "validation_selection_by_variant": {
+    "temporal": {
+      "confirm_persistent": true,
+      "k6": 1.0,
+      "c3": 0.5,
+      "max_shared": 0.5,
+      "regional_suppress": true,
+      "regional_min": 0.5,
+      "threshold": 0.27,
+      "f1": 0.48694931639276345,
+      "fa_per_station_day": 0.19902020820575628,
+      "recall": 0.3651615575807788,
+      "event_recall": 0.774818401937046,
+      "regional_events_alerted": 0.027777777777777776,
+      "feasible": true
+    },
+    "temporal+multivariate": {
+      "confirm_persistent": true,
+      "k6": 1.5,
+      "c3": 0.5,
+      "max_shared": 0.5,
+      "regional_suppress": true,
+      "regional_min": 0.5,
+      "threshold": 0.31,
+      "f1": 0.5145205479452055,
+      "fa_per_station_day": 0.18187385180649113,
+      "recall": 0.38898094449047227,
+      "event_recall": 0.8401937046004843,
+      "regional_events_alerted": 0.037037037037037035,
+      "feasible": true
+    },
+    "temporal+spatial": {
+      "confirm_persistent": true,
+      "k6": 1.5,
+      "c3": 1.0,
+      "max_shared": 0.5,
+      "regional_suppress": false,
+      "regional_min": 0.5,
+      "threshold": 0.24,
+      "f1": 0.5254511176945866,
+      "fa_per_station_day": 0.1981016533986528,
+      "recall": 0.40410107705053855,
+      "event_recall": 0.8329297820823245,
+      "regional_events_alerted": 0.07407407407407407,
+      "feasible": true
+    },
+    "temporal+multivariate+spatial": {
+      "confirm_persistent": true,
+      "k6": 1.0,
+      "c3": 0.5,
+      "max_shared": 0.5,
+      "regional_suppress": false,
+      "regional_min": 0.5,
+      "threshold": 0.29,
+      "f1": 0.58203125,
+      "fa_per_station_day": 0.18891610532761788,
+      "recall": 0.4629246064623032,
+      "event_recall": 0.8837772397094431,
+      "regional_events_alerted": 0.09259259259259259,
+      "feasible": true
+    },
+    "full": {
+      "confirm_persistent": true,
+      "k6": 1.5,
+      "c3": 0.5,
+      "max_shared": 0.5,
+      "regional_suppress": true,
+      "regional_min": 0.5,
+      "threshold": 0.23,
+      "f1": 0.5494826213849827,
+      "fa_per_station_day": 0.1956521739130435,
+      "recall": 0.42895608947804476,
+      "event_recall": 0.8958837772397095,
+      "regional_events_alerted": 0.05555555555555555,
+      "feasible": true
+    }
+  },
+  "alert_threshold": 0.23,
   "regional_suppression": 1.0,
   "regional_fraction": 0.6,
   "calibration": "isotonic regression on validation",
@@ -75,9 +176,13 @@
     "rh_sp_frac",
     "rh_sp_wdiff",
     "rh_sp_rate_resid",
-    "sp_n"
+    "sp_n",
+    "ae_t",
+    "ae_p",
+    "ae_rh",
+    "ae_total"
   ],
-  "feature_version": "fv1",
+  "feature_version": "fv2",
   "config_version": "1.0.0",
   "seed": 7,
   "baseline_thresholds": {
@@ -144,7 +249,17 @@
   ],
   "final_benchmark_sha256": "ea0c63e6616f1b0af49a75eadb91822076ba7244a7c4a8a91f6a880f882ad473",
   "final_benchmark_frozen_at": "2026-09-28T22:11:19+00:00",
-  "trained_at": "2026-09-28T23:47:04+00:00",
+  "frozen_benchmarks": {
+    "final_eval": {
+      "sha256": "ea0c63e6616f1b0af49a75eadb91822076ba7244a7c4a8a91f6a880f882ad473",
+      "frozen_at": "2026-09-28T22:11:19+00:00"
+    },
+    "final_eval_v2": {
+      "sha256": "7ac4977808eeaf0c2be8004b6f0df41a3ab484da1601be68eafff5f958adc5d3",
+      "frozen_at": "2026-09-29T06:16:12+00:00"
+    }
+  },
+  "trained_at": "2026-09-29T06:58:05+00:00",
   "model_inputs": "temperature_c, pressure_hpa, relative_humidity_pct only (lat/lon used only for neighbour selection)",
   "libraries": {
     "scikit-learn": "1.9.1",

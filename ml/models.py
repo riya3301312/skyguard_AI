@@ -6,6 +6,7 @@ from sklearn.isotonic import IsotonicRegression
 from sklearn.metrics import f1_score
 from sklearn.neural_network import MLPRegressor
 
+from .decision import DEFAULT_RULES, apply_rules
 from .features import GROUPS, MV_COLS, SPATIAL_COLS, TEMPORAL_COLS
 from .schema import SHORT, VARS
 
@@ -189,6 +190,56 @@ class SkyGuardHybrid:
         _, self.regional_suppression, self.threshold = best
         return self
 
+    def select_rules(self, Fv: pd.DataFrame, yv: np.ndarray, cfg: dict, grid: list[dict],
+                     injection_id: np.ndarray, injection_kind: np.ndarray) -> list[dict]:
+        """Choose decision rules + threshold jointly on VALIDATION.
+
+        Pre-registered operational criterion (config [model]): false alerts/station-day <= budget and share of
+        regional weather events with any alert <= regional budget; maximise event-level recall, tie -> row F1.
+        Returns, per rule configuration, its best operating point, so the choice is auditable."""
+        anom_ids = np.where((yv == 1) & (injection_id != "") & (injection_id != "REAL_GAP"), injection_id, "")
+        reg_ids = np.where(injection_kind == "regional_event", injection_id, "")
+        a_codes, _ = pd.factorize(pd.Series(anom_ids).replace("", np.nan))
+        r_codes, _ = pd.factorize(pd.Series(reg_ids).replace("", np.nan))
+        reg_budget = cfg["model"]["max_regional_event_alert_share"]
+
+        def share(codes, pred):
+            ok = codes >= 0
+            n = codes[ok].max() + 1 if ok.any() else 0
+            return float((np.bincount(codes[ok], weights=pred[ok].astype(float), minlength=n) > 0).mean()) if n else 0.0
+        hard = Fv["qc_hard"].to_numpy()
+        prob, _ = self.predict_proba(Fv)
+        pat = np.full(len(Fv), "NORMAL", dtype=object)
+        par = np.full(len(Fv), "", dtype=object)
+        soft = ~hard
+        pp = self.pattern.predict_proba(Fv.loc[soft, self.cols])
+        pat[soft] = np.where(pp.max(axis=1) >= 0.4, self.pattern.classes_[pp.argmax(axis=1)], "UNKNOWN_SUSPECT")
+        par[soft] = self.param.predict(Fv.loc[soft, self.cols])
+        sd, budget = station_days(Fv), cfg["model"]["max_false_alerts_per_station_day"]
+        trace = []
+        for rules in grid:
+            p2, _ = apply_rules(Fv, pat, par, rules)
+            kept = (p2 != "NORMAL") | hard
+            best = None
+            for t in np.linspace(0.05, 0.95, 91):
+                pred = ((prob >= t) & kept) | hard
+                fa = int((pred & (yv == 0)).sum()) / max(sd, 1)
+                if fa > budget:
+                    continue
+                reg = share(r_codes, pred)
+                row = {**rules, "threshold": round(float(t), 3), "f1": f1_score(yv, pred, zero_division=0),
+                       "fa_per_station_day": fa, "recall": float((pred & (yv == 1)).sum() / max((yv == 1).sum(), 1)),
+                       "event_recall": share(a_codes, pred), "regional_events_alerted": reg, "feasible": reg <= reg_budget}
+                key = (row["feasible"], round(row["event_recall"], 3), round(row["f1"], 3))
+                if best is None or key > (best["feasible"], round(best["event_recall"], 3), round(best["f1"], 3)):
+                    best = row
+            if best:
+                trace.append(best)
+        chosen = max(trace, key=lambda r: (r["feasible"], round(r["event_recall"], 3), round(r["f1"], 3)))
+        self.rules = {k: chosen[k] for k in DEFAULT_RULES}
+        self.threshold = chosen["threshold"]
+        return trace
+
     def predict_proba(self, F: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
         """Returns (probability, regional_evidence). QC-hard rows get probability 1.0 (deterministic)."""
         hard = F["qc_hard"].to_numpy()
@@ -213,6 +264,7 @@ class SkyGuardHybrid:
             conf[flag] = pp.max(axis=1)
             pattern[flag] = np.where(conf[flag] >= 0.4, self.pattern.classes_[best], "UNKNOWN_SUSPECT")
             param[flag] = self.param.predict(F.loc[flag, self.cols])
+        pattern, param = apply_rules(F, pattern, param, getattr(self, "rules", None))
         if hard.any():
             pattern[hard] = F.loc[hard, "qc_hard_class"].to_numpy()
             conf[hard] = 1.0

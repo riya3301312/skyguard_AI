@@ -1,34 +1,27 @@
 {
-  "provisional_results_revised_after_neighbour_data": 9,
-  "run_at": "2026-09-29T00:21:17+00:00",
-  "api": "http://127.0.0.1:62841",
+  "provisional_results_revised_after_neighbour_data": 6,
+  "run_at": "2026-09-29T07:23:20+00:00",
+  "api": "http://127.0.0.1:8000",
   "detector_mode": "hybrid",
-  "model_version": "fv1/temporal+multivariate+spatial/2026-09-28T23:47:04+00:00",
-  "live_replay_wall_seconds": 184.76,
+  "model_version": "fv2/full/2026-09-29T06:58:05+00:00",
+  "live_replay_wall_seconds": 186.78,
   "observations_processed": 1580,
   "processing_latency_ms": {
     "n": 1580,
-    "p50_ms": 4.85,
-    "p95_ms": 556.5819999999999,
-    "p99_ms": 819.7206000000007,
-    "mean_ms": 116.30382278481015,
-    "max_ms": 1547.55
+    "p50_ms": 6.79,
+    "p95_ms": 588.8104999999999,
+    "p99_ms": 797.2322000000004,
+    "mean_ms": 118.2442974683544,
+    "max_ms": 1636.64
   },
   "scenarios": {
     "A_clean_station": {
-      "passed": false,
+      "passed": true,
       "expected": "normal, no false alert",
       "evidence": {
         "clean_observations": 124,
-        "false_alerts": 1,
-        "false_alert_details": [
-          {
-            "station_id": "VOPB",
-            "observation_time": "2024-08-05T10:00:00+00:00",
-            "fault_pattern": "DRIFT",
-            "anomaly_probability": 0.6306306306306305
-          }
-        ]
+        "false_alerts": 0,
+        "false_alert_details": []
       }
     },
     "B_temperature_spike": {
@@ -53,7 +46,7 @@
           "pattern": "SPIKE",
           "parameter": "temperature_c",
           "anomaly_probability": 1.0,
-          "alert_threshold": 0.35,
+          "alert_threshold": 0.23,
           "severity": "HIGH",
           "detector_mode": "hybrid",
           "evidence": [
@@ -61,22 +54,37 @@
             "16.7 robust deviations above this station's usual temperature for this time of day (7-day baseline 23.0 \u00b0C, observed 55.2 \u00b0C).",
             "Nearby stations (n=4) deviated by a median -1.0 \u00b0C; this station +32.2 \u00b0C; 0% of neighbours show a similar change.",
             "Pressure showed no comparable change (+0.0 hPa).",
-            "Temperature/RH relationship is inconsistent: RH 94% vs 18% expected if moisture were unchanged."
+            "Temperature/RH relationship is inconsistent: RH 94% vs 18% expected if moisture were unchanged.",
+            "Isolated to this station: only 0 of 4 neighbours show a similar change."
           ],
           "feature_group_contributions": [
             [
               "multivariate",
-              0.28
+              0.431
             ],
             [
               "temporal_temperature",
-              0.234
+              0.348
             ],
             [
               "spatial",
-              0.12
+              0.21
             ]
           ],
+          "weather_vs_sensor": {
+            "status": "SENSOR_ANOMALY",
+            "regional_evidence": {
+              "regional_score": 0.0,
+              "temporal_alignment": 0.0,
+              "spatial_consistency": 0.0,
+              "stations_supporting_event": 0,
+              "stations_considered": 4
+            },
+            "station_exception": {
+              "present": false,
+              "reason": null
+            }
+          },
           "note": "Observable data pattern, not a confirmed physical hardware diagnosis."
         },
         "clean_value": 24.0
@@ -88,28 +96,26 @@
       "evidence": {
         "flatline_alerts": 3,
         "all_alerts_in_window": {
-          "FLATLINE": 3,
-          "DRIFT": 2
+          "FLATLINE": 3
         },
-        "first_flatline_hour": 49
+        "first_flatline_hour": 47
       }
     },
     "D_gradual_drift": {
       "passed": true,
       "expected": "drift detected; maintenance risk may increase",
       "evidence": {
-        "drift_or_offset_alerts": 27,
-        "first_hour": 40,
+        "drift_or_offset_alerts": 28,
+        "first_hour": 41,
         "patterns": {
-          "STEP_OFFSET": 15,
-          "DRIFT": 12,
-          "COMPOSITE_FAULT": 2
+          "STEP_OFFSET": 16,
+          "DRIFT": 12
         },
         "maintenance": {
           "risk": "HIGH",
-          "reason": "Persistent drift/offset/flatline pattern in the last 7 days and health 28/100. Inspect/recalibrate sensor."
+          "reason": "Persistent drift/offset/flatline pattern in the last 7 days and health 30/100. Inspect/recalibrate sensor."
         },
-        "health": 27.5
+        "health": 30.0
       }
     },
     "E_communication_failure": {
@@ -136,34 +142,80 @@
     },
     "F_regional_weather_event": {
       "passed": true,
-      "expected": "regional event evidence; reduced sensor-fault false alarm",
+      "expected": "regional weather -> regional evidence and no sensor-fault alert",
       "evidence": {
-        "cluster_observations": 30,
+        "cluster_observations": 28,
         "sensor_fault_alerts": 0,
         "alerts": [],
-        "rows_with_regional_evidence": 1,
-        "suppressed_regional_alerts_logged": 0,
-        "max_probability": 0.3250883392226148
+        "weather_status_counts": {
+          "NORMAL": 22,
+          "REGIONAL_WEATHER": 6
+        },
+        "regional_events_logged_as_info": 3,
+        "max_probability": 0.5027932960893855
+      }
+    },
+    "F2_regional_weather_with_station_exception": {
+      "passed": true,
+      "expected": "regional weather + isolated sensor fault -> isolated station still alerted",
+      "evidence": {
+        "station": "VOTR",
+        "rows": [
+          {
+            "hour": 22,
+            "is_anomaly": false,
+            "fault_pattern": "NORMAL",
+            "parameter": "",
+            "anomaly_probability": 0.1567622950819672,
+            "weather_status": "NORMAL"
+          },
+          {
+            "hour": 23,
+            "is_anomaly": true,
+            "fault_pattern": "COMPOSITE_FAULT",
+            "parameter": "pressure_hpa",
+            "anomaly_probability": 0.2611683848797251,
+            "weather_status": "REGIONAL_WEATHER_WITH_STATION_EXCEPTION"
+          }
+        ]
       }
     },
     "G_isolated_station_event": {
       "passed": true,
-      "expected": "spatial inconsistency; higher sensor-fault likelihood than the regional event",
+      "expected": "isolated change -> spatial-inconsistency sensor alert, while the regional event raises none",
       "evidence": {
         "alerts": [
           {
+            "hour": 29,
+            "fault_pattern": "SPATIAL_INCONSISTENCY",
+            "weather_status": "SENSOR_ANOMALY",
+            "anomaly_probability": 0.41304347826086957,
+            "severity": "LOW"
+          },
+          {
             "hour": 30,
             "fault_pattern": "SPATIAL_INCONSISTENCY",
-            "anomaly_probability": 0.7457627118644068,
-            "severity": "MEDIUM"
+            "weather_status": "SENSOR_ANOMALY",
+            "anomaly_probability": 0.4383561643835616,
+            "severity": "LOW"
+          },
+          {
+            "hour": 32,
+            "fault_pattern": "SPATIAL_INCONSISTENCY",
+            "weather_status": "SENSOR_ANOMALY",
+            "anomaly_probability": 0.2611683848797251,
+            "severity": "LOW"
           }
         ],
-        "max_probability_isolated": 0.7457627118644068,
-        "max_probability_regional": 0.3250883392226148,
+        "sensor_fault_alerts_during_regional_event": 0,
+        "raw_detector_max_probability_isolated": 0.4383561643835616,
+        "raw_detector_max_probability_regional": 0.5027932960893855,
+        "note": "the regional rows' raw detector probability can exceed the isolated event's; the weather-vs-sensor decision layer classifies them as regional weather (no sensor-fault alert) and the isolated change as a sensor anomaly",
         "evidence_example": [
-          "2.6 robust deviations above this station's usual temperature for this time of day (7-day baseline 24.0 \u00b0C, observed 31.0 \u00b0C).",
-          "Nearby stations (n=3) deviated by a median +1.0 \u00b0C; this station +7.0 \u00b0C; 0% of neighbours show a similar change.",
-          "Pressure showed no comparable change (+0.6 hPa)."
+          "2.4 robust deviations above this station's usual temperature for this time of day (7-day baseline 24.0 \u00b0C, observed 30.0 \u00b0C).",
+          "Nearby stations (n=3) deviated by a median +1.8 \u00b0C; this station +6.0 \u00b0C; 0% of neighbours show a similar change.",
+          "Pressure showed no comparable change (+0.0 hPa).",
+          "Isolated to this station: only 0 of 3 neighbours show a similar change."
         ]
       }
     },
@@ -172,18 +224,18 @@
       "expected": "reasonable generalisation",
       "evidence": {
         "final_eval_held_out": {
-          "precision": 0.8004750593824228,
-          "recall": 0.5466342254663422,
-          "f1": 0.6496385542168674,
-          "pr_auc": 0.717260909663342,
-          "false_alerts_per_station_day": 0.2291950886766712
+          "precision": 0.8156565656565656,
+          "recall": 0.44582470669427193,
+          "f1": 0.5765283355644801,
+          "pr_auc": 0.7018925897298847,
+          "false_alerts_per_station_day": 0.19918144611186903
         },
         "final_eval_seen": {
-          "precision": 0.8032249248428532,
-          "recall": 0.47024,
-          "f1": 0.5931981027348875,
-          "pr_auc": 0.6613720282571728,
-          "false_alerts_per_station_day": 0.21891152325934934
+          "precision": 0.8215356928614277,
+          "recall": 0.4593325507294986,
+          "f1": 0.5892223297838012,
+          "pr_auc": 0.6848246387363184,
+          "false_alerts_per_station_day": 0.18090605047126787
         },
         "criterion": "held-out F1 >= 70% of seen-station F1"
       }
@@ -268,6 +320,6 @@
       }
     }
   },
-  "passed": 9,
-  "total": 10
+  "passed": 11,
+  "total": 11
 }

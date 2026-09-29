@@ -18,7 +18,13 @@ export const PATTERN = {
   COMPOSITE_FAULT: "Composite fault", UNKNOWN_SUSPECT: "Unclassified suspect", REGIONAL_WEATHER_EVENT: "Regional weather event",
 };
 
-export const fmtTime = (s) => (s ? new Date(s).toISOString().slice(5, 16).replace("T", " ") + "Z" : "—");
+const WVS = {
+  NORMAL: "normal weather", REGIONAL_WEATHER: "regional weather (not a sensor fault)",
+  REGIONAL_WEATHER_WITH_STATION_EXCEPTION: "regional weather, but this station shows its own anomaly",
+  SENSOR_ANOMALY: "isolated station / sensor anomaly", UNCERTAIN: "uncertain — neighbours share part of the change",
+};
+
+export const fmtTime =(s) => (s ? new Date(s).toISOString().slice(5, 16).replace("T", " ") + "Z" : "—");
 export const pct = (p) => (p == null ? "n/a" : `${(100 * p).toFixed(1)}%`);
 export const paramLabel = (p) => (!p ? "—" : p === "all" ? "All parameters" : p.split("+").map((x) => VLABEL[x] || x).join(" + "));
 const num = (x, d = 1) => (x == null || Number.isNaN(x) ? "—" : Number(x).toFixed(d));
@@ -206,6 +212,13 @@ export function AlertDetail({ alert, onClose, onReview, error }) {
           <div className="stat"><span>Estimated normal</span><b>{alert.estimated_value == null ? "—" : `${num(alert.estimated_value)} ${unit}`}</b><small>recommendation only</small></div>
         </div>
         <p className="pattern-line">{e.likely_fault_pattern}</p>
+        {e.weather_vs_sensor && (
+          <div className="wvs">
+            <b>Weather vs sensor:</b> {WVS[e.weather_vs_sensor.status] || e.weather_vs_sensor.status}
+            <span className="muted"> · regional score {e.weather_vs_sensor.regional_evidence?.regional_score ?? "—"} · {e.weather_vs_sensor.regional_evidence?.stations_supporting_event ?? 0} of {e.weather_vs_sensor.regional_evidence?.stations_considered ?? 0} neighbours share the change
+              {e.weather_vs_sensor.station_exception?.present ? ` · station exception: ${e.weather_vs_sensor.station_exception.reason}` : ""}</span>
+          </div>
+        )}
         <h3>Evidence</h3>
         <ul className="evidence">{(e.evidence || []).map((x, i) => <li key={i}>{x}</li>)}</ul>
         {!!(e.feature_group_contributions || []).length && (

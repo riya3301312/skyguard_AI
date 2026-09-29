@@ -18,3 +18,4 @@ data/*.sqlite*
 artifacts/scenarios/buffer_*.jsonl
 artifacts/ablation_models/
 .claude/
+artifacts/regression/_*.joblib

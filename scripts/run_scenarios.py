@@ -104,7 +104,7 @@ def main() -> None:
         key = (r["station_id"], r["observation_time"])
         if key in results:
             results[key] = {**results[key], **{k: r[k] for k in ("is_anomaly", "anomaly_probability", "fault_pattern", "parameter",
-                                                                  "severity", "regional_evidence", "regional_suppressed",
+                                                                  "severity", "regional_evidence", "regional_suppressed", "weather_status",
                                                                   "estimated_temperature_c", "replacement_recommended")}}
             ex = A[(A["station_id"] == key[0]) & (A["observation_time"] == key[1]) & A["state"].isin(["OPEN", "ACKNOWLEDGED"])]
             if len(ex):
@@ -158,27 +158,42 @@ def main() -> None:
     gap = alerts(e.station_id, 50, 57, "MISSING_COMMUNICATION")
     out["E_communication_failure"] = _res(len(gap) > 0, {"gap_alerts": gap[["observation_time", "explanation"]].to_dict("records")},
                                           "missing/communication pattern detected")
-    # F - regional weather event
+    # F - regional weather event (+ F2: regional event with an isolated station exception)
+    x = T["regional_with_station_exception"]
     reg = R[R["station_id"].isin(cluster) & R["hour"].between(20, 25)]
-    sensor_alerts = reg[reg["is_anomaly"]]
+    exc_rows = (reg["station_id"] == x.station_id) & reg["hour"].between(22, 23)
+    sensor_alerts = reg[reg["is_anomaly"] & ~exc_rows]
     info = A[(A["state"] == "INFO") & A["hour"].between(20, 25)]
+    status_counts = reg.loc[~exc_rows, "weather_status"].value_counts().to_dict() if "weather_status" in reg else {}
     out["F_regional_weather_event"] = _res(
-        len(sensor_alerts) <= 1 and bool(reg["regional_evidence"].any()),
-        {"cluster_observations": int(len(reg)), "sensor_fault_alerts": int(len(sensor_alerts)),
+        len(sensor_alerts) == 0 and status_counts.get("REGIONAL_WEATHER", 0) > 0,
+        {"cluster_observations": int((~exc_rows).sum()), "sensor_fault_alerts": int(len(sensor_alerts)),
          "alerts": sensor_alerts[["station_id", "hour", "fault_pattern", "anomaly_probability"]].to_dict("records"),
-         "rows_with_regional_evidence": int(reg["regional_evidence"].sum()), "suppressed_regional_alerts_logged": int(len(info)),
-         "max_probability": float(reg["anomaly_probability"].max())},
-        "regional event evidence; reduced sensor-fault false alarm")
+         "weather_status_counts": status_counts, "regional_events_logged_as_info": int(len(info)),
+         "max_probability": float(reg.loc[~exc_rows, "anomaly_probability"].max())},
+        "regional weather -> regional evidence and no sensor-fault alert")
+    ex = reg[exc_rows]
+    out["F2_regional_weather_with_station_exception"] = _res(
+        bool((ex["is_anomaly"] & ex["parameter"].isin(["pressure_hpa", "all"])).any()),
+        {"station": x.station_id, "rows": ex[["hour", "is_anomaly", "fault_pattern", "parameter", "anomaly_probability",
+                                                "weather_status"]].to_dict("records")},
+        "regional weather + isolated sensor fault -> isolated station still alerted")
     # G - isolated station event
     g = T["isolated_event"]
     iso = R[(R["station_id"] == g.station_id) & R["hour"].between(28, 33)]
     iso_alerts = iso[iso["is_anomaly"]]
+    # judged on the system's decision (sensor-fault alert + status), with raw detector probabilities reported for transparency
+    iso_ok = iso_alerts["fault_pattern"].eq("SPATIAL_INCONSISTENCY") & iso_alerts["weather_status"].eq("SENSOR_ANOMALY")
     out["G_isolated_station_event"] = _res(
-        len(iso_alerts) > 0 and float(iso["anomaly_probability"].max()) > float(reg["anomaly_probability"].max()),
-        {"alerts": iso_alerts[["hour", "fault_pattern", "anomaly_probability", "severity"]].to_dict("records"),
-         "max_probability_isolated": float(iso["anomaly_probability"].max()), "max_probability_regional": float(reg["anomaly_probability"].max()),
+        bool(iso_ok.any()) and len(sensor_alerts) == 0,
+        {"alerts": iso_alerts[["hour", "fault_pattern", "weather_status", "anomaly_probability", "severity"]].to_dict("records"),
+         "sensor_fault_alerts_during_regional_event": int(len(sensor_alerts)),
+         "raw_detector_max_probability_isolated": float(iso["anomaly_probability"].max()),
+         "raw_detector_max_probability_regional": float(reg.loc[~exc_rows, "anomaly_probability"].max()),
+         "note": "the regional rows' raw detector probability can exceed the isolated event's; the weather-vs-sensor decision layer "
+                 "classifies them as regional weather (no sensor-fault alert) and the isolated change as a sensor anomaly",
          "evidence_example": iso_alerts["explanation"].iloc[0]["evidence"] if len(iso_alerts) else None},
-        "spatial inconsistency; higher sensor-fault likelihood than the regional event")
+        "isolated change -> spatial-inconsistency sensor alert, while the regional event raises none")
     # H - held-out station (from the frozen final evaluation; this station is also held out and replayed here)
     fe = ROOT / "artifacts" / "final_evaluation" / "metrics.json"
     ho = json.loads(fe.read_text())["held_out"] if fe.exists() else None

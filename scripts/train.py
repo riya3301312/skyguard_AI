@@ -24,6 +24,10 @@ from ml.models import (AE_WIN, FEATURE_SETS, IForestDetector, SkyGuardHybrid, Te
 from ml.pipeline import ModelBundle, add_ae, features_for, load_stations, score_features  # noqa: E402
 from ml.schema import read_canonical  # noqa: E402
 
+RULE_GRID = [{"confirm_persistent": False, "k6": 1.0, "c3": 0.5, "max_shared": 0.5, "regional_suppress": rs, "regional_min": 0.5}
+             for rs in (False, True)] +             [{"confirm_persistent": True, "k6": k, "c3": c, "max_shared": 0.5, "regional_suppress": rs, "regional_min": 0.5}
+             for k in (0.75, 1.0, 1.5) for c in (0.5, 1.0) for rs in (False, True)]
+
 BENCH = ROOT / "data" / "benchmark"
 ART = ROOT / "artifacts"
 
@@ -82,15 +86,19 @@ def main() -> None:
     for fs in FEATURE_SETS:
         h = SkyGuardHybrid(fs, seed=seed, regional_rule=(fs == "full"))
         h.fit(Ftr, y, cls, param).calibrate(Fva[mv], yv[mv], cfg)
+        h.rule_trace = h.select_rules(Fva[mv].reset_index(drop=True), yv[mv], cfg, RULE_GRID,
+                                      va.loc[mv, "injection_id"].to_numpy(), va.loc[mv, "injection_kind"].to_numpy())
+        h.selection = next(r for r in h.rule_trace if r["threshold"] == h.threshold and all(r[k] == h.rules[k] for k in h.rules))
         variants[fs] = h
         approaches[f"hybrid[{fs}]"] = hybrid_scores(h, Fva)
-        print(f"hybrid[{fs}] threshold={h.threshold:.2f} regional_x={h.regional_suppression} ({time.time() - t0:.0f}s)")
+        print(f"hybrid[{fs}] threshold={h.threshold:.2f} rules={h.rules} event_recall={h.selection['event_recall']:.3f} "
+              f"regional_alerted={h.selection['regional_events_alerted']:.3f} ({time.time() - t0:.0f}s)")
     val = compare(Fva, va, approaches)
 
     # ---- select the final variant on validation F1 (ties -> fewer false alerts per station-day)
-    ranked = sorted(FEATURE_SETS, key=lambda fs: (-round(val[f"hybrid[{fs}]"]["f1"], 3),
-                                                  val[f"hybrid[{fs}]"]["false_alerts_per_station_day"]))
-    chosen = ranked[0]
+    # pre-registered operational criterion (same as rule selection): feasible budgets, then event recall, then F1
+    chosen = max(FEATURE_SETS, key=lambda fs: (variants[fs].selection["feasible"], round(variants[fs].selection["event_recall"], 3),
+                                                round(variants[fs].selection["f1"], 3)))
     final = variants[chosen]
 
     # ---- correction estimator chosen on validation
@@ -105,9 +113,11 @@ def main() -> None:
             best_m, best_err = method, rel
 
     meta = {
-        "model_name": "SkyGuard Hybrid", "selected_variant": chosen, "selection_rule": "max validation F1, tie -> min false alerts/station-day",
+        "model_name": "SkyGuard Hybrid", "selected_variant": chosen, "selection_rule": "validation: false alerts/station-day <= budget and regional-event alert share <= budget; maximise event recall, then F1",
+        "decision_rules": final.rules, "validation_operating_point": final.selection,
         "operating_point_rule": f"max validation F1 subject to <= {cfg['model']['max_false_alerts_per_station_day']} false alerts per station-day (all approaches)",
         "validation_f1_by_variant": {fs: val[f"hybrid[{fs}]"]["f1"] for fs in FEATURE_SETS},
+        "validation_selection_by_variant": {fs: variants[fs].selection for fs in FEATURE_SETS},
         "alert_threshold": final.threshold, "regional_suppression": final.regional_suppression,
         "regional_fraction": final.regional_fraction, "calibration": "isotonic regression on validation",
         "features": final.cols, "feature_version": cfg["feature_version"], "config_version": cfg["config_version"],
@@ -118,6 +128,9 @@ def main() -> None:
         "val_period": [str(va.loc[mv, "timestamp"].min()), str(va.loc[mv, "timestamp"].max())],
         "held_out_stations": frozen["held_out_stations"],
         "final_benchmark_sha256": frozen["sha256_uncompressed_csv"], "final_benchmark_frozen_at": frozen["frozen_at"],
+        "frozen_benchmarks": {p.parent.name: {"sha256": json.loads(p.read_text())["sha256_uncompressed_csv"],
+                                              "frozen_at": json.loads(p.read_text())["frozen_at"]}
+                              for p in sorted(BENCH.glob("final_eval*/MANIFEST.json")) if json.loads(p.read_text()).get("frozen")},
         "trained_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "model_inputs": "temperature_c, pressure_hpa, relative_humidity_pct only (lat/lon used only for neighbour selection)",
         "libraries": {"scikit-learn": __import__("sklearn").__version__, "pandas": pd.__version__, "numpy": np.__version__},
@@ -130,7 +143,8 @@ def main() -> None:
     (ART / "validation").mkdir(parents=True, exist_ok=True)
     (ART / "validation" / "selection.json").write_text(json.dumps(
         {"validation_metrics": val, "selected_variant": chosen, "correction_validation": corr_val,
-         "correction_method": best_m, "thresholds": thresholds}, indent=2, default=str))
+         "correction_method": best_m, "thresholds": thresholds,
+         "rule_selection_trace": {fs: variants[fs].rule_trace for fs in FEATURE_SETS}}, indent=2, default=str))
     print(f"selected variant: {chosen}; correction: {best_m}; total {time.time() - t0:.0f}s")
     for k, v in val.items():
         print(f"  {k:32s} P={v['precision']:.3f} R={v['recall']:.3f} F1={v['f1']:.3f} PR-AUC={v['pr_auc'] or 0:.3f} "

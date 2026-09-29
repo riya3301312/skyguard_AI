@@ -186,12 +186,22 @@ def explain(row: pd.Series, contrib: dict | None, threshold: float, detector_mod
     if param != "pressure_hpa":
         pr = row.get("p_rate_z")
         if pr is not None and math.isfinite(pr) and abs(pr) < 2:
-            ev.append(f"Pressure showed no comparable change ({row.get('p_rate'):+.1f} hPa).")
+            ev.append(f"Pressure showed no comparable jump since the previous observation ({row.get('p_rate'):+.1f} hPa).")
     resid = row.get("mv_rh_resid")
     if resid is not None and math.isfinite(resid) and abs(resid) > 10:
         ev.append(f"Temperature/RH relationship is inconsistent: RH {row.get('x_rh'):.0f}% vs {row.get('x_rh') - resid:.0f}% expected if moisture were unchanged.")
-    if row.get("regional_evidence"):
-        ev.append("Regional evidence: most neighbours show a similar change, consistent with a weather event; sensor-fault probability reduced.")
+    status = row.get("weather_status")
+    n_cons, n_sup = int(row.get("stations_considered") or 0), int(row.get("stations_supporting_event") or 0)
+    if status == "REGIONAL_WEATHER_WITH_STATION_EXCEPTION":
+        ev.append(f"Regional weather present ({n_sup} of {n_cons} neighbours share the change), but this station shows an "
+                  f"exception: {row.get('exception_reason')}. Flagged separately from the regional event.")
+    elif status == "UNCERTAIN":
+        ev.append(f"Uncertain: {n_sup} of {n_cons} neighbours share this change (possible regional weather), yet the "
+                  "detector still scores it anomalous. Review recommended.")
+    elif status == "REGIONAL_WEATHER":
+        ev.append(f"Regional weather: {n_sup} of {n_cons} neighbours show a similar change; not treated as a sensor fault.")
+    elif status == "SENSOR_ANOMALY" and n_cons >= 2:
+        ev.append(f"Isolated to this station: only {n_sup} of {n_cons} neighbours show a similar change.")
     name = (LABEL.get(param, "Multi-parameter") + " " + PATTERN_TEXT.get(pattern, pattern)) if pattern != "NORMAL" else "none"
     contrib = contrib or {}
     top = sorted(((k, round(float(v), 3)) for k, v in contrib.items() if v > 0.01), key=lambda kv: -kv[1])
@@ -202,5 +212,11 @@ def explain(row: pd.Series, contrib: dict | None, threshold: float, detector_mod
         "anomaly_probability": _f(row.get("prob"), 3), "alert_threshold": round(threshold, 3),
         "severity": row.get("severity") or None, "detector_mode": detector_mode,
         "evidence": ev, "feature_group_contributions": top,
+        "weather_vs_sensor": {
+            "status": status,
+            "regional_evidence": {k: _f(row.get(k), 3) for k in ("regional_score", "temporal_alignment", "spatial_consistency")}
+            | {"stations_supporting_event": n_sup, "stations_considered": n_cons},
+            "station_exception": {"present": bool(row.get("station_exception")), "reason": row.get("exception_reason")},
+        },
         "note": "Observable data pattern, not a confirmed physical hardware diagnosis.",
     }

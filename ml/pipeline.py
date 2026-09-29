@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 
 from .config import load_config
+from .decision import annotate
 from .features import build_features
 from .models import AE_COLS, IForestDetector, SkyGuardHybrid, TemporalAutoencoder
 from .postprocess import corrections, health, severity
@@ -67,6 +68,8 @@ def score_features(F: pd.DataFrame, bundle: ModelBundle, cfg: dict | None = None
     R["prob"], R["regional_evidence"] = h.predict_proba(F)
     R["pattern"], R["param"], R["pattern_conf"] = h.classify(F, R["prob"].to_numpy())
     R["flag"] = R["pattern"] != "NORMAL"
+    ev = annotate(R, R["flag"].to_numpy(), (getattr(h, "rules", None) or {}).get("regional_min", 0.5))
+    R = pd.concat([R.drop(columns=[c for c in ev.columns if c in R.columns]), ev], axis=1)
     return postprocess(R, bundle, cfg)
 
 

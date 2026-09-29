@@ -1,6 +1,6 @@
 """Frozen final evaluation (run once, after training). Produces artifacts/final_evaluation/*.
 
-python scripts/evaluate_final.py --dataset data/benchmark/final_eval --model artifacts/final_model
+python scripts/evaluate_final.py --dataset data/benchmark/final_eval_v2 --model artifacts/final_model
 """
 import argparse
 import json
@@ -14,7 +14,7 @@ from ml.report import evaluate  # noqa: E402
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dataset", default="data/benchmark/final_eval")
+    ap.add_argument("--dataset", default="data/benchmark/final_eval_v2")
     ap.add_argument("--model", default="artifacts/final_model")
     ap.add_argument("--out", default="artifacts/final_evaluation")
     a = ap.parse_args()

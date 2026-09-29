@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-09-29T06:47:58+00:00",
+  "host": "win32",
+  "status": "ENVIRONMENT-UNVERIFIED",
+  "docker_version": null,
+  "reason": "No Docker engine is installed on the verification machine; build/startup/health/smoke were NOT run.",
+  "checks": {
+    "build": "NOT RUN",
+    "startup": "NOT RUN",
+    "health": "NOT RUN",
+    "api_smoke": "NOT RUN",
+    "dashboard_smoke": "NOT RUN",
+    "scenarios": "NOT RUN",
+    "logs": "NOT RUN",
+    "shutdown": "NOT RUN"
+  }
+}

@@ -122,7 +122,7 @@ def _compact(r: dict) -> dict:
     keys = ["station_id", "observation_time", "ingestion_time", "temperature_c", "pressure_hpa", "relative_humidity_pct",
             "is_anomaly", "anomaly_probability", "fault_pattern", "parameter", "severity", "health_score", "health_status",
             "estimated_temperature_c", "estimated_pressure_hpa", "estimated_relative_humidity_pct", "regional_evidence",
-            "regional_suppressed", "delayed", "out_of_order", "processing_latency_ms", "edge_flags", "edge_health_score"]
+            "regional_suppressed", "weather_status", "delayed", "out_of_order", "processing_latency_ms", "edge_flags", "edge_health_score"]
     return {k: r.get(k) for k in keys}
 
 

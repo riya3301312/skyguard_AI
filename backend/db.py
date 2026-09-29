@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS observations(
   delayed INTEGER, out_of_order INTEGER, lag_minutes REAL, processing_latency_ms REAL, detector_mode TEXT,
   is_anomaly INTEGER, anomaly_probability REAL, anomaly_score REAL, fault_pattern TEXT, parameter TEXT,
   severity TEXT, severity_score REAL, regional_evidence INTEGER, regional_suppressed INTEGER,
+  weather_status TEXT, regional_score REAL,
   health_score REAL, health_status TEXT,
   estimated_temperature_c REAL, estimated_pressure_hpa REAL, estimated_relative_humidity_pct REAL,
   replacement_recommended INTEGER, edge_flags TEXT, edge_health_score REAL,
@@ -32,7 +33,7 @@ CREATE INDEX IF NOT EXISTS anom_station ON anomalies(station_id, observation_tim
 OBS_COLS = ["station_id", "observation_time", "ingestion_time", "temperature_c", "pressure_hpa", "relative_humidity_pct",
             "source", "delayed", "out_of_order", "lag_minutes", "processing_latency_ms", "detector_mode", "is_anomaly",
             "anomaly_probability", "anomaly_score", "fault_pattern", "parameter", "severity", "severity_score",
-            "regional_evidence", "regional_suppressed", "health_score", "health_status", "estimated_temperature_c",
+            "regional_evidence", "regional_suppressed", "weather_status", "regional_score", "health_score", "health_status", "estimated_temperature_c",
             "estimated_pressure_hpa", "estimated_relative_humidity_pct", "replacement_recommended", "edge_flags",
             "edge_health_score"]
 
@@ -45,6 +46,11 @@ class DB:
         self.conn.row_factory = sqlite3.Row
         self.conn.execute("PRAGMA journal_mode=WAL")
         self.conn.executescript(SCHEMA)
+        for col in ("weather_status TEXT", "regional_score REAL"):  # migrate databases created before these columns
+            try:
+                self.conn.execute(f"ALTER TABLE observations ADD COLUMN {col}")
+            except sqlite3.OperationalError:
+                pass
         self.lock = threading.Lock()
 
     def reset(self) -> None:
@@ -90,7 +96,7 @@ class DB:
     def apply_revision(self, rv: dict) -> None:
         """Apply a re-scored (provisional -> revised) result. Only result columns change; raw values are immutable."""
         cols = ["is_anomaly", "anomaly_probability", "anomaly_score", "fault_pattern", "parameter", "severity", "severity_score",
-                "regional_evidence", "regional_suppressed", "estimated_temperature_c", "estimated_pressure_hpa",
+                "regional_evidence", "regional_suppressed", "weather_status", "regional_score", "estimated_temperature_c", "estimated_pressure_hpa",
                 "estimated_relative_humidity_pct", "replacement_recommended"]
         key = (rv["station_id"], rv["observation_time"])
         with self.lock:

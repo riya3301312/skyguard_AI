@@ -14,6 +14,7 @@ import numpy as np
 import pandas as pd
 
 from .config import load_config
+from .decision import annotate
 from .features import neighbors, spatial_features, station_features
 from .models import AE_COLS, fixed_threshold_score
 from .postprocess import corrections, explain, health, health_reasons, maintenance_risk, severity
@@ -161,6 +162,16 @@ class StreamEngine:
                     r["batch_size"] = len(observations)
             return out
 
+    def _evidence(self, F: pd.DataFrame, prob: np.ndarray) -> tuple[pd.DataFrame, np.ndarray]:
+        """Attach weather-vs-sensor evidence; return rows the model scored >= threshold but that were not
+        alerted while regional weather evidence was present (logged as INFO, not as a sensor fault)."""
+        rules = getattr(self.bundle.hybrid, "rules", None) if self.bundle else None
+        ev = annotate(F, F["flag"].to_numpy(bool), (rules or {}).get("regional_min", 0.5))
+        F = pd.concat([F.drop(columns=[c for c in ev.columns if c in F.columns]), ev], axis=1)
+        thr = self.bundle.hybrid.threshold if self.bundle else np.inf
+        held = ev["regional_evidence"].to_numpy(bool) & ~F["flag"].to_numpy(bool) & ~F["qc_hard"].to_numpy(bool)             & (np.nan_to_num(np.asarray(prob, float)) >= thr)
+        return F, held
+
     def pop_revisions(self) -> list[dict]:
         with self.lock:
             out, self.revisions = self.revisions, []
@@ -196,6 +207,8 @@ class StreamEngine:
         old = F[["flag", "pattern", "prob"]].copy()
         F = F.assign(prob=prob, regional_evidence=reg, pattern=pattern, param=param, pattern_conf=conf)
         F["flag"] = F["pattern"] != "NORMAL"
+        F, held = self._evidence(F, prob)
+        suppressed = suppressed | held
         touched = old["flag"].astype(bool).to_numpy() | F["flag"].to_numpy(bool) | suppressed
         res = self.res[nid].copy()
         for c in list(sp.columns) + ["prob", "regional_evidence"]:  # refreshed spatial context for every revised row
@@ -205,8 +218,10 @@ class StreamEngine:
             return
         keep = touched
         F, old, raw, suppressed, idx = F[keep], old[keep], raw[keep], suppressed[keep], idx[keep]
-        for c in list(sp.columns) + ["prob", "regional_evidence", "pattern", "param", "pattern_conf", "flag"]:
-            res[c] = res[c].astype(object) if c in ("pattern", "param") else res[c]
+        for c in list(sp.columns) + ["prob", "regional_evidence", "pattern", "param", "pattern_conf", "flag",
+                                     "regional_score", "stations_supporting_event", "stations_considered", "temporal_alignment",
+                                     "spatial_consistency", "station_exception", "exception_reason", "weather_status"]:
+            res[c] = res[c].astype(object) if c in ("pattern", "param", "exception_reason", "weather_status") else res[c]
             res.loc[idx, c] = F[c].to_numpy()
         window = res[(res.index > idx[0] - pd.Timedelta("2D")) & (res.index <= idx[-1])].copy()
         for c in ("flag", "qc_hard", "placeholder", "regional_evidence"):
@@ -235,6 +250,7 @@ class StreamEngine:
                 "anomaly_score": _num(raw[k]), "fault_pattern": str(row["pattern"]), "parameter": str(row["param"]),
                 "severity": str(row["severity"]) or None, "severity_score": round(float(row["severity_score"]), 1),
                 "regional_evidence": bool(row["regional_evidence"]), "regional_suppressed": bool(suppressed[k]),
+                "weather_status": str(row["weather_status"]), "regional_score": _num(row["regional_score"]),
                 **{f"estimated_{v}": _num(row.get(f"estimated_{v}")) for v in VARS},
                 "replacement_recommended": bool(row.get("replacement_recommended", False)),
                 "explanation": exp, "reason": "re-scored after neighbour observations for the same time arrived",
@@ -312,6 +328,8 @@ class StreamEngine:
         F = F.assign(prob=np.nan_to_num(prob, nan=1.0), regional_evidence=reg, pattern=pattern, param=param,
                      pattern_conf=conf, placeholder=False)
         F["flag"] = F["pattern"] != "NORMAL"
+        F, held = self._evidence(F, prob)
+        suppressed = suppressed | held
 
         past = self.res.get(sid, pd.DataFrame())
         if len(past):
@@ -352,6 +370,7 @@ class StreamEngine:
                 "anomaly_score": _num(raw_score[k]), "fault_pattern": str(r["pattern"]), "parameter": str(r["param"]),
                 "severity": str(r["severity"]) or None, "severity_score": round(float(r["severity_score"]), 1),
                 "regional_evidence": bool(r["regional_evidence"]), "regional_suppressed": bool(suppressed[k]),
+                "weather_status": str(r["weather_status"]), "regional_score": _num(r["regional_score"]),
                 "health_score": float(r["health_score"]), "health_status": str(r["health_status"]),
                 **{f"estimated_{v}": _num(r.get(f"estimated_{v}")) for v in VARS},
                 "replacement_recommended": bool(r.get("replacement_recommended", False)),

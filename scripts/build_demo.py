@@ -3,6 +3,7 @@
 The story (hourly observations, live phase ~72 h after an 8-day warm-up):
   h12      temperature spike 55.2 degC at one station (isolated)              -> SPIKE + estimate
   h20-25   regional weather event across the whole cluster (T drop, RH up)   -> NOT a sensor fault
+  h22-23   one cluster station also has its own +9 hPa pressure fault        -> flagged as station exception
   h28-33   isolated smooth warming at one station, physically consistent     -> spatial inconsistency
   h36-50   frozen temperature at one station                                 -> FLATLINE
   h30-72   slow pressure drift at one station                                -> DRIFT, maintenance risk
@@ -79,6 +80,12 @@ def main() -> None:
         d.loc[m, "pressure_hpa"] = np.round(d.loc[m, "pressure_hpa"].to_numpy(float) + 2.0 * shape[: m.sum()], 1)
     truth.append({"hour": 20, "station_id": ",".join(cluster), "kind": "regional_weather_event", "parameter": "all"})
     note(a, 20, "Regional weather event: every station in the cluster cools together")
+    # h22-23: during the regional event, one station ALSO has its own pressure fault (station exception)
+    exc = cluster[-1]
+    m = at(exc, 22, 23)
+    d.loc[m, "pressure_hpa"] = np.round(d.loc[m, "pressure_hpa"].to_numpy(float) + 9.0, 1)
+    truth.append({"hour": 22, "station_id": exc, "kind": "regional_with_station_exception", "parameter": "pressure_hpa"})
+    note(exc, 22, f"During the regional event, {exc} also shows a +9 hPa pressure fault of its own")
     # h28-33 isolated physically-consistent warming at station b
     m = at(b, 28, 33)
     t0 = d.loc[m, "temperature_c"].to_numpy(float)

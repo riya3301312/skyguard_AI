@@ -81,6 +81,11 @@ def station_features(raw: pd.DataFrame, cfg: dict | None = None) -> pd.DataFrame
         f[f"{s}_tod_base"] = tod_med
         f[f"{s}_tod_dev"] = tod_dev
         f[f"{s}_tod_z"] = tod_dev / (1.4826 * tod_mad + eps)
+        # decision-rule context (not model inputs): robust scale and envelope of the deviation over the persistence window
+        f[f"{s}_tod_scale"] = 1.4826 * tod_mad + eps
+        pw = fc["persistence_window"]
+        f[f"{s}_dev_lo_win"] = tod_dev.rolling(pw, min_periods=3).min()
+        f[f"{s}_dev_hi_win"] = tod_dev.rolling(pw, min_periods=3).max()
         prev = x.ffill().shift(1)
         rate = (x - prev) / dt_slots
         f[f"{s}_rate"] = rate
@@ -129,7 +134,8 @@ def neighbors(stations: dict[str, dict], cfg: dict | None = None) -> dict[str, l
 
 
 SPATIAL_COLS = [f"{SHORT[v]}_{k}" for v in VARS for k in ("sp_resid", "sp_z", "sp_frac", "sp_wdiff", "sp_rate_resid")] + ["sp_n"]
-NBMED_COLS = [f"{SHORT[v]}_sp_nbmed" for v in VARS]
+# spatial context used by decision rules / explanations only (not model inputs)
+NBMED_COLS = [f"{SHORT[v]}_{k}" for v in VARS for k in ("sp_nbmed", "sp_frac_lag", "sp_outliers")]
 
 
 def spatial_features(own: pd.DataFrame, nbrs: list[tuple[pd.DataFrame, float]], cfg: dict | None = None) -> pd.DataFrame:
@@ -153,14 +159,22 @@ def _spatial(own, nbrs, cfg):
         return out
     w = np.array([1.0 / max(d, 1.0) for _, d in nbrs])
     n_avail = None
+    lag = idx - pd.Timedelta(minutes=cfg["data"]["interval_minutes"])
     for v in VARS:
         s = SHORT[v]
         dev = np.column_stack([_lookup(nf[f"{s}_tod_dev"], idx, tol) for nf, _ in nbrs])
+        dev_prev = np.column_stack([_lookup(nf[f"{s}_tod_dev"], lag, tol) for nf, _ in nbrs])
         rate = np.column_stack([_lookup(nf[f"{s}_rate"], idx, tol) for nf, _ in nbrs])
-        ok = np.isfinite(dev)
-        n = ok.sum(axis=1)
-        n_avail = n if n_avail is None else np.maximum(n_avail, n)
         with np.errstate(all="ignore"):
+            # robust neighbourhood: a neighbour far from the others (e.g. itself drifting) is excluded
+            med0 = np.nanmedian(dev, axis=1)
+            mad0 = np.nanmedian(np.abs(dev - med0[:, None]), axis=1)
+            outlier = (np.isfinite(dev).sum(axis=1, keepdims=True) >= 3) &                 (np.abs(dev - med0[:, None]) > 3 * 1.4826 * np.nan_to_num(mad0, nan=0.0)[:, None] + 4 * EPS[s])
+            out[f"{s}_sp_outliers"] = outlier.sum(axis=1).astype(float)
+            dev = np.where(outlier, np.nan, dev)
+            ok = np.isfinite(dev)
+            n = ok.sum(axis=1)
+            n_avail = n if n_avail is None else np.maximum(n_avail, n)
             nb_med = np.where(n > 0, np.nanmedian(np.where(n[:, None] > 0, dev, 0.0), axis=1), np.nan)
             nb_mad = np.where(n > 1, np.nanmedian(np.abs(dev - nb_med[:, None]), axis=1), np.nan)
             own_dev = own[f"{s}_tod_dev"].to_numpy()
@@ -169,8 +183,13 @@ def _spatial(own, nbrs, cfg):
             out[f"{s}_sp_resid"] = resid
             out[f"{s}_sp_z"] = resid / (1.4826 * np.nan_to_num(nb_mad, nan=0.0) + 2 * EPS[s])
             big = np.abs(own_dev) > 2 * EPS[s]
-            similar = (np.sign(dev) == np.sign(own_dev)[:, None]) & (np.abs(dev) >= 0.5 * np.abs(own_dev)[:, None])
-            out[f"{s}_sp_frac"] = np.where(n > 0, np.where(big, (similar & ok).sum(axis=1) / np.maximum(n, 1), 1.0), np.nan)
+
+            def share(d):
+                similar = (np.sign(d) == np.sign(own_dev)[:, None]) & (np.abs(d) >= 0.5 * np.abs(own_dev)[:, None]) & np.isfinite(d)
+                return np.where(n > 0, np.where(big, similar.sum(axis=1) / np.maximum(n, 1), 1.0), np.nan)
+            out[f"{s}_sp_frac"] = share(dev)
+            # temporal alignment: neighbours may lead by one observation interval
+            out[f"{s}_sp_frac_lag"] = np.fmax(share(dev), share(np.where(outlier, np.nan, dev_prev)))
             wd = np.nansum(w * (own_dev[:, None] - dev) * ok, axis=1) / np.maximum((w * ok).sum(axis=1), 1e-9)
             out[f"{s}_sp_wdiff"] = np.where(n > 0, wd, np.nan)
             rn = np.isfinite(rate).sum(axis=1)

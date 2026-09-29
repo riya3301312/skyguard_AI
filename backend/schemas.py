@@ -63,6 +63,8 @@ class ObservationResult(BaseModel):
     severity_score: float | None = None
     regional_evidence: bool | None = None
     regional_suppressed: bool | None = None
+    weather_status: str | None = Field(None, description="NORMAL | REGIONAL_WEATHER | REGIONAL_WEATHER_WITH_STATION_EXCEPTION | SENSOR_ANOMALY | UNCERTAIN")
+    regional_score: float | None = None
     health_score: float | None = None
     health_status: str | None = None
     estimated_temperature_c: float | None = None

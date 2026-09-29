@@ -1,7 +1,7 @@
 # SkyGuard AI configuration. Every threshold used by QC, detection, severity,
 # health and maintenance logic lives here and is versioned with `config_version`.
 config_version = "1.0.0"
-feature_version = "fv1"
+feature_version = "fv2"   # fv2: robust neighbour median (outlier exclusion) + decision-rule context
 
 [data]
 start = "2023-01-01"
@@ -58,10 +58,12 @@ min_periods = 3
 neighbor_radius_km = 300.0
 neighbor_max = 6
 neighbor_time_tolerance_minutes = 45
+persistence_window = "4h"     # DRIFT/STEP need one-signed deviation sustained over this window
 
 [model]
 seed = 7
 max_false_alerts_per_station_day = 0.2   # operating-point budget used when choosing thresholds on validation
+max_regional_event_alert_share = 0.10  # pre-registered: <= 10% of regional weather events may raise any alert (validation)
 regional_fraction = 0.6         # >= this share of neighbours moving together => regional evidence
 regional_suppression = 0.35     # probability multiplier for weather-plausible regional events
 

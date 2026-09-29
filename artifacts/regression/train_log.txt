@@ -1,0 +1,165 @@
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\pipeline.py:48: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  F[v] = df[v].to_numpy()
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\features.py:222: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  part.insert(0, "station_id", sid)
+C:\Users\RIYA\skyguard_AI\ml\features.py:223: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  parts.append(part.reset_index(names="timestamp"))
+C:\Users\RIYA\skyguard_AI\ml\pipeline.py:48: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  F[v] = df[v].to_numpy()
+features: train (157680, 110), val (82080, 110) in 13s
+autoencoder trained (28s)
+hybrid[temporal] threshold=0.27 rules={'confirm_persistent': True, 'k6': 1.0, 'c3': 0.5, 'max_shared': 0.5, 'regional_suppress': True, 'regional_min': 0.5} event_recall=0.775 regional_alerted=0.028 (120s)
+hybrid[temporal+multivariate] threshold=0.31 rules={'confirm_persistent': True, 'k6': 1.5, 'c3': 0.5, 'max_shared': 0.5, 'regional_suppress': True, 'regional_min': 0.5} event_recall=0.840 regional_alerted=0.037 (214s)
+hybrid[temporal+spatial] threshold=0.24 rules={'confirm_persistent': True, 'k6': 1.5, 'c3': 1.0, 'max_shared': 0.5, 'regional_suppress': False, 'regional_min': 0.5} event_recall=0.833 regional_alerted=0.074 (296s)
+hybrid[temporal+multivariate+spatial] threshold=0.29 rules={'confirm_persistent': True, 'k6': 1.0, 'c3': 0.5, 'max_shared': 0.5, 'regional_suppress': False, 'regional_min': 0.5} event_recall=0.884 regional_alerted=0.093 (389s)
+hybrid[full] threshold=0.23 rules={'confirm_persistent': True, 'k6': 1.5, 'c3': 0.5, 'max_shared': 0.5, 'regional_suppress': True, 'regional_min': 0.5} event_recall=0.896 regional_alerted=0.056 (497s)
+selected variant: full; correction: auto; total 514s
+  fixed_threshold                  P=0.903 R=0.112 F1=0.199 PR-AUC=0.156 FA/st-day=0.018 ev-recall=0.368
+  robust_statistical               P=0.515 R=0.120 F1=0.194 PR-AUC=0.218 FA/st-day=0.166 ev-recall=0.412
+  isolation_forest                 P=0.569 R=0.178 F1=0.271 PR-AUC=0.324 FA/st-day=0.199 ev-recall=0.603
+  temporal_autoencoder             P=0.545 R=0.159 F1=0.247 PR-AUC=0.259 FA/st-day=0.196 ev-recall=0.349
+  hybrid[temporal]                 P=0.731 R=0.365 F1=0.487 PR-AUC=0.506 FA/st-day=0.199 ev-recall=0.775
+  hybrid[temporal+multivariate]    P=0.760 R=0.389 F1=0.515 PR-AUC=0.603 FA/st-day=0.182 ev-recall=0.840
+  hybrid[temporal+spatial]         P=0.751 R=0.404 F1=0.525 PR-AUC=0.539 FA/st-day=0.198 ev-recall=0.833
+  hybrid[temporal+multivariate+spatial] P=0.784 R=0.463 F1=0.582 PR-AUC=0.636 FA/st-day=0.189 ev-recall=0.884
+  hybrid[full]                     P=0.764 R=0.429 F1=0.549 PR-AUC=0.632 FA/st-day=0.196 ev-recall=0.896

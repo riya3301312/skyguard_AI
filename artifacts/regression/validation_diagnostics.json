@@ -1,0 +1,88 @@
+{
+  "model": "full",
+  "threshold": 0.23,
+  "detection": {
+    "n": 78025,
+    "positives": 4828,
+    "tp": 2071,
+    "fp": 639,
+    "fn": 2757,
+    "tn": 72558,
+    "precision": 0.7642066420664206,
+    "recall": 0.42895608947804476,
+    "f1": 0.5494826213849827,
+    "roc_auc": 0.8795890390856447,
+    "pr_auc": 0.6320086665811991,
+    "false_positive_rate": 0.008729865978113857,
+    "false_alerts_per_1000_obs": 8.18968279397629,
+    "false_alerts_per_station_day": 0.1956521739130435,
+    "station_days": 3266
+  },
+  "events": {
+    "events": 413,
+    "event_recall": 0.8958837772397095,
+    "event_recall_by_class": {
+      "COMPOSITE_FAULT": 1.0,
+      "DRIFT": 0.8108,
+      "FLATLINE": 0.913,
+      "MISSING_COMMUNICATION": 1.0,
+      "MULTIVARIATE_INCONSISTENCY": 0.8592,
+      "NEGATIVE_SPIKE": 0.8621,
+      "SENTINEL_CORRUPTION": 1.0,
+      "SPATIAL_INCONSISTENCY": 0.6875,
+      "SPIKE": 0.8889,
+      "STEP_OFFSET": 0.8571
+    },
+    "events_by_class": {
+      "COMPOSITE_FAULT": 34,
+      "DRIFT": 37,
+      "FLATLINE": 46,
+      "MISSING_COMMUNICATION": 34,
+      "MULTIVARIATE_INCONSISTENCY": 71,
+      "NEGATIVE_SPIKE": 58,
+      "SENTINEL_CORRUPTION": 44,
+      "SPATIAL_INCONSISTENCY": 16,
+      "SPIKE": 45,
+      "STEP_OFFSET": 28
+    },
+    "regional_events": 108,
+    "regional_events_falsely_alerted": 0.05555555555555555
+  },
+  "regional": {
+    "regional_event_station_instances": 108,
+    "instances_with_any_alert": 6,
+    "falsely_alerted_rate": 0.05555555555555555,
+    "alerted_rows": 9,
+    "alerted_rows_at_event_onset_row": 3,
+    "alerted_patterns": {
+      "SPATIAL_INCONSISTENCY": 4,
+      "MULTIVARIATE_INCONSISTENCY": 3,
+      "UNKNOWN_SUSPECT": 1,
+      "STEP_OFFSET": 1
+    },
+    "alerted_parameters": {
+      "temperature_c": 8,
+      "pressure_hpa": 1
+    },
+    "alert_rate_by_neighbours": {
+      "1.0": 0.25,
+      "2.0": 0.024,
+      "3.0": 0.01
+    }
+  },
+  "false_positive_patterns": {
+    "STEP_OFFSET": 194,
+    "DRIFT": 127,
+    "COMPOSITE_FAULT": 117,
+    "MULTIVARIATE_INCONSISTENCY": 94,
+    "FLATLINE": 71,
+    "NEGATIVE_SPIKE": 11,
+    "UNKNOWN_SUSPECT": 9,
+    "SPATIAL_INCONSISTENCY": 9,
+    "SPIKE": 7
+  },
+  "false_positive_kinds": {
+    "clean": 630,
+    "regional_event": 9
+  }
+}

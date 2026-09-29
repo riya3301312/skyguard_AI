@@ -12,8 +12,10 @@ APPROACH_NAMES = {"fixed_threshold": "Fixed Threshold", "robust_statistical": "R
 
 
 def hybrid_scores(h: SkyGuardHybrid, F: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
+    """Score = calibrated probability; decision = full hybrid decision (threshold + validated decision rules)."""
     p, _ = h.predict_proba(F)
-    return p, p >= h.threshold
+    pattern, _, _ = h.classify(F, p)
+    return p, pattern != "NORMAL"
 
 
 def baseline_scores(bundle: ModelBundle, F: pd.DataFrame) -> dict:

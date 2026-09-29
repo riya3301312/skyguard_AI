@@ -3,15 +3,20 @@
 Real-time, explainable anomaly detection for **temperature, atmospheric pressure and relative humidity** from
 Automatic Weather Stations, designed for remote and data-sparse Indian deployments.
 
-It is a production-quality **SIH prototype** that takes AWS observations and turns them into verified alerts:
+It is a **production-oriented SIH prototype** (not production infrastructure) that takes AWS observations and turns them into verified alerts:
 
 * **Checks:** deterministic QC, then temporal, multivariate and spatial evidence, feeding a calibrated anomaly probability.
 * **Per alert:** an observable fault pattern, severity, explanation and sensor-health score.
 * **Correction:** an optional correction *recommendation*. The raw value is always preserved.
 * **Operations:** store-and-forward remote uplink, a live dashboard, and a tiny C edge-check library for ESP32-class loggers.
 
-Measured results are in [`docs/SkyGuard_AI_Final_SIH_Evaluation_Report.md`](docs/SkyGuard_AI_Final_SIH_Evaluation_Report.md), generated
-from `artifacts/`. The README deliberately repeats no numbers.
+Measured results are in [`docs/reports/`](docs/reports/), generated from `artifacts/` by `scripts/make_report.py`:
+
+* [Final SIH evaluation report](docs/reports/SkyGuard_AI_Final_SIH_Evaluation_Report.md)
+* [Weather-vs-sensor analysis](docs/reports/SkyGuard_AI_Weather_vs_Sensor_Analysis.md)
+* [Deployment verification](docs/reports/SkyGuard_AI_Final_Deployment_Verification.md)
+
+The README deliberately repeats no numbers.
 
 ## Architecture
 
@@ -27,7 +32,9 @@ StreamEngine  ml/stream.py   (same code as batch evaluation → training/serving
   → multivariate T/P/RH consistency (dew-point physics)
   → spatial features from configurable neighbours (optional)
   → MLP temporal autoencoder → gradient-boosted detector → isotonic calibration   ml/models.py
-  → regional-weather-event rule → fault-pattern + parameter classifiers
+  → fault-pattern + parameter classifiers
+  → weather-vs-sensor decision layer (ml/decision.py): regional evidence score, station exceptions,
+    persistence-confirmed DRIFT/STEP — parameters selected on validation
   → severity · explanation · sensor health · correction · maintenance risk        ml/postprocess.py
       ▼
 SQLite (raw values immutable via trigger)  ──  SSE /api/v1/stream  ──  React dashboard (dashboard/)
@@ -88,16 +95,19 @@ cd dashboard && npm ci && npm run build && cd ..
 python scripts/fetch_raw_data.py          # only step needing internet; skipped files already in data/raw
 python scripts/build_dataset.py           # raw -> data/processed/clean.csv + stations.json
 python scripts/inject_anomalies.py --input data/processed/clean.csv --output data/benchmark.csv --seed 42   # stand-alone injector
-python scripts/build_benchmark.py         # leakage-safe splits; FREEZES data/benchmark/final_eval (re-run = integrity check)
+python scripts/build_benchmark.py         # leakage-safe splits; FREEZES final_eval (v1) and final_eval_v2 (re-run = integrity check)
 python scripts/train.py                   # trains baselines + ablation variants on TRAIN, selects on VALIDATION
 python scripts/evaluate.py                # validation report -> artifacts/validation/
-python scripts/evaluate_final.py --dataset data/benchmark/final_eval --model artifacts/final_model
+python scripts/diagnose_validation.py     # weather-vs-sensor / drift diagnostics on validation -> artifacts/regression/
+python scripts/evaluate_final.py --dataset data/benchmark/final_eval_v2 --model artifacts/final_model
 python edge/build_edge.py                 # C edge library + RV32 size/stack + host timing -> artifacts/edge/
 python scripts/build_demo.py              # deterministic SIH demo replay -> data/demo/
-python scripts/make_report.py             # docs/SkyGuard_AI_Final_SIH_Evaluation_Report.md from artifacts
+python scripts/verify_docker.py           # Docker build/run/health/smoke, or ENVIRONMENT-UNVERIFIED if no engine
+python -m pytest tests -q --junitxml artifacts/regression/pytest_junit.xml
+python scripts/make_report.py             # docs/reports/*.md from artifacts
 ```
 
-Order matters: the final benchmark is frozen **before** training. `train.py` refuses to run otherwise, and it records the
+Order matters: the final benchmark is frozen **before** training (v2 was frozen before the hardening pass; v1 is kept, historical). `train.py` refuses to run otherwise, and it records the
 benchmark hash and freeze time in the model metadata. `evaluate_final.py` verifies both before evaluating.
 
 ## Run the API and dashboard
@@ -157,7 +167,7 @@ cp .env.example .env
 docker compose up --build
 ```
 
-This is a single container (dashboard, API and edge library) with a named volume for the database and a health check. See the final report for whether Docker was verified in this environment.
+This is a single container (dashboard, API and edge library) with a named volume for the database and a health check. `python scripts/verify_docker.py` performs and records the verification; on the build machine no Docker engine was installed, so the container is **environment-unverified** (see the deployment verification report).
 
 ## Tests
 
@@ -173,5 +183,7 @@ See section 13 of the evaluation report. In brief:
 
 * **Data:** METAR resolution and pressure type, and injected rather than real labelled faults.
 * **Spatial coverage:** evidence exists only where neighbours are within the configured radius.
-* **Edge:** no ESP32 hardware measurement, and no energy figures.
+* **Weather vs sensor:** some regional weather events still raise an alert; the decision layer trades some row-level recall for far fewer false alerts (quantified in the reports).
+* **Edge:** ESP32-compatible C edge library validated by cross-compilation and host execution; no physical ESP32 hardware validation or energy measurement.
+* **Docker:** not verified on the build machine (no engine installed).
 * **Scale:** single-process SQLite prototype.
