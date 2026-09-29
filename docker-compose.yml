@@ -1,0 +1,15 @@
+services:
+  skyguard:
+    build: .
+    image: skyguard-ai:local
+    ports:
+      - "8000:8000"
+    environment:
+      SKYGUARD_API_TOKEN: ${SKYGUARD_API_TOKEN:?set SKYGUARD_API_TOKEN (see .env.example)}
+      SKYGUARD_CORS_ORIGINS: ${SKYGUARD_CORS_ORIGINS:-http://localhost:8000}
+      SKYGUARD_WRITE_RATE_PER_MIN: ${SKYGUARD_WRITE_RATE_PER_MIN:-600}
+    volumes:
+      - skyguard-db:/app/data/db
+    restart: unless-stopped
+volumes:
+  skyguard-db: {}

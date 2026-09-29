@@ -1,0 +1,327 @@
+{
+  "files": {
+    "VIDP.csv.gz": {
+      "station": "VIDP",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VIDP&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:33:52+00:00",
+      "sha256_uncompressed": "82fa7955d5c195dead230b21803482b41c13f2d0a726059dffd1230125de7513",
+      "bytes": 2263203
+    },
+    "VIDD.csv.gz": {
+      "station": "VIDD",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VIDD&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:33:55+00:00",
+      "sha256_uncompressed": "ce99d851531c8aff03b8cf8d7c5a12c89c82061c4e7f36dd8be226b922dabf3a",
+      "bytes": 13330
+    },
+    "VIAG.csv.gz": {
+      "station": "VIAG",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VIAG&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:34:28+00:00",
+      "sha256_uncompressed": "e58bc98309f5176baed3cbbc34086292a097a90fc8442dd0cd4d3f501bc26ba6",
+      "bytes": 148329
+    },
+    "VIJP.csv.gz": {
+      "station": "VIJP",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VIJP&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:35:07+00:00",
+      "sha256_uncompressed": "88a03fef21ae3b47e6c9949fa83e38c8193bf197f10b59d30372c0afa915dde5",
+      "bytes": 2272118
+    },
+    "VIDN.csv.gz": {
+      "station": "VIDN",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VIDN&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:35:34+00:00",
+      "sha256_uncompressed": "a53f49eb59ced70e98c4b98cbcc69be90e24172704ac303c52fdb2d2ec981f37",
+      "bytes": 1168814
+    },
+    "VICG.csv.gz": {
+      "station": "VICG",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VICG&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:35:46+00:00",
+      "sha256_uncompressed": "d87028b3716e9402f42e07d94f0b133e1e433515b388b22b56678b768f263470",
+      "bytes": 173093
+    },
+    "VIGR.csv.gz": {
+      "station": "VIGR",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VIGR&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:35:56+00:00",
+      "sha256_uncompressed": "cd15b8eaec05f80475dd6741b224e67e9ee6a83edbbead0e980a0ad783fd51df",
+      "bytes": 174029
+    },
+    "VILK.csv.gz": {
+      "station": "VILK",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VILK&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:36:34+00:00",
+      "sha256_uncompressed": "2c0c7c3cc470a3f3a4180c772ee819c43b473b76e7a4195553fa1c8289f3ed63",
+      "bytes": 2034795
+    },
+    "VABB.csv.gz": {
+      "station": "VABB",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VABB&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:37:27+00:00",
+      "sha256_uncompressed": "528fdf050b1bb17db42be2e1b6e1625d8e0a0ac8d72c7210b133d17077e85fd3",
+      "bytes": 2191740
+    },
+    "VAJJ.csv.gz": {
+      "station": "VAJJ",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VAJJ&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:37:46+00:00",
+      "sha256_uncompressed": "9c8168244d5d0f2c83b480456aafd08031f640310e74a07535cb67610893a648",
+      "bytes": 985952
+    },
+    "VAPO.csv.gz": {
+      "station": "VAPO",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VAPO&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:37:59+00:00",
+      "sha256_uncompressed": "6e3bdca262f829f7c686354fcb5c1ce41ba70956684c45775b2a6e6a52b75953",
+      "bytes": 218088
+    },
+    "VAAU.csv.gz": {
+      "station": "VAAU",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VAAU&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:45:20+00:00",
+      "sha256_uncompressed": "1e644aea01fbd56c51c7ab1565887caff07515a62d09c90263567695f8ac15e8",
+      "bytes": 805408
+    },
+    "VOBL.csv.gz": {
+      "station": "VOBL",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VOBL&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:46:01+00:00",
+      "sha256_uncompressed": "268149b72cf99ae5506306df6999cfa92d1c8a508c49444928017256caa0871f",
+      "bytes": 2284877
+    },
+    "VOBG.csv.gz": {
+      "station": "VOBG",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VOBG&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:47:33+00:00",
+      "sha256_uncompressed": "2358a01cc9ce7efc5110c504024d363d9def80c6346d76c46c1ecad970e21274",
+      "bytes": 1929350
+    },
+    "VOMY.csv.gz": {
+      "station": "VOMY",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VOMY&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:48:03+00:00",
+      "sha256_uncompressed": "0f7873271ca7f2ad435174ca347c5a0d66272761350c91ad90c69ba63586ac0a",
+      "bytes": 980234
+    },
+    "VOCB.csv.gz": {
+      "station": "VOCB",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VOCB&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:48:40+00:00",
+      "sha256_uncompressed": "ae609b4d0cda1afdab130578e1bbc90b11da585abe3b431f9769c84c7834e352",
+      "bytes": 2047052
+    },
+    "VILH.csv.gz": {
+      "station": "VILH",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VILH&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:48:55+00:00",
+      "sha256_uncompressed": "cb22d579a32fdecc109484a1cfa8e4154a0b3c3f0fc6ca92430ca9333975c612",
+      "bytes": 194264
+    },
+    "VOPB.csv.gz": {
+      "station": "VOPB",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VOPB&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:49:26+00:00",
+      "sha256_uncompressed": "5108f0c4741b8c71803a3c68c257f41cda4e1a79d024af871aa6ce04f97614ea",
+      "bytes": 1415998
+    },
+    "VOMM.csv.gz": {
+      "station": "VOMM",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VOMM&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:51:15+00:00",
+      "sha256_uncompressed": "3ecd6c4a42b0e6d67aa8dfc7724284ef6ff8be7d801b576fe132a3dec43b8b97",
+      "bytes": 2241944
+    },
+    "VOTV.csv.gz": {
+      "station": "VOTV",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VOTV&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:51:48+00:00",
+      "sha256_uncompressed": "e6bd61cb5fc01ee6ec650ef71a73a50662db1e0306a392de37461d284090b1f9",
+      "bytes": 2168774
+    },
+    "VOCI.csv.gz": {
+      "station": "VOCI",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VOCI&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:52:23+00:00",
+      "sha256_uncompressed": "38e3305adc01cdc674769602a5baf4640f92698749a835894d6e9ad739b3bcf4",
+      "bytes": 2106191
+    },
+    "VOCL.csv.gz": {
+      "station": "VOCL",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VOCL&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:53:00+00:00",
+      "sha256_uncompressed": "3255c41c36eaea3ef63516ea3244286e89a1d3b04dc4333772a67f59fbb1c323",
+      "bytes": 2298432
+    },
+    "VOML.csv.gz": {
+      "station": "VOML",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VOML&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:53:43+00:00",
+      "sha256_uncompressed": "39a3f6d54a4857aaf347c4d06ce633c8475889aad58ef1954356c7877c84ea85",
+      "bytes": 2153556
+    },
+    "VOHS.csv.gz": {
+      "station": "VOHS",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VOHS&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:54:24+00:00",
+      "sha256_uncompressed": "46279168090e8e056d18affd350fd2efff83c2a6a39f29884a5b55505f61a5c8",
+      "bytes": 2079444
+    },
+    "VOHY.csv.gz": {
+      "station": "VOHY",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VOHY&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:54:52+00:00",
+      "sha256_uncompressed": "15e33a0f043864446259a9fac54c818ea339394622d397c2437b15d0c04f1bdd",
+      "bytes": 1314135
+    },
+    "VAAH.csv.gz": {
+      "station": "VAAH",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VAAH&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:55:31+00:00",
+      "sha256_uncompressed": "319ce52ad52ad5a49f993e50dc008f12e297a565372a26349abffa3c140c7709",
+      "bytes": 2223925
+    },
+    "VECC.csv.gz": {
+      "station": "VECC",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VECC&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:56:11+00:00",
+      "sha256_uncompressed": "9707241d032c64e61c16ea832c3b271390f083ca48baaa83929f3590586dfd79",
+      "bytes": 2218467
+    },
+    "VEBS.csv.gz": {
+      "station": "VEBS",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VEBS&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:57:15+00:00",
+      "sha256_uncompressed": "44d0785b52deec99e0e2cd60c4cb26701e8afe7bf3a79bf533896372c47a848f",
+      "bytes": 2193531
+    },
+    "VIAR.csv.gz": {
+      "station": "VIAR",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VIAR&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:58:55+00:00",
+      "sha256_uncompressed": "2639e436ecb4f7799042ca855f4a2b7ea87950f62e59d2982b8ec64099f65347",
+      "bytes": 2122753
+    },
+    "VAID.csv.gz": {
+      "station": "VAID",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VAID&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T21:59:51+00:00",
+      "sha256_uncompressed": "666c4e4aab0b27b3cd8c9022bbf81b0c8c30135faad28ab0b06adfb83a09499c",
+      "bytes": 1985968
+    },
+    "VABP.csv.gz": {
+      "station": "VABP",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VABP&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T22:00:19+00:00",
+      "sha256_uncompressed": "a35071120a04c09b67c77015403333499484a1db97f858380eaf74edff69f8f4",
+      "bytes": 1073441
+    },
+    "VANP.csv.gz": {
+      "station": "VANP",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VANP&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T22:01:34+00:00",
+      "sha256_uncompressed": "baac9f23ef1f8208a47e2b1bcf75f7aebad037f8d350ae2b256aa5a9c7cc9df0",
+      "bytes": 2271728
+    },
+    "VOTR.csv.gz": {
+      "station": "VOTR",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VOTR&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T22:02:35+00:00",
+      "sha256_uncompressed": "0baa6cdc1cbc5ac895027af8213450f57471f5c7002183e4f8b2840f171b9ee9",
+      "bytes": 2168814
+    },
+    "VOMD.csv.gz": {
+      "station": "VOMD",
+      "url": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?station=VOMD&data=tmpc&data=relh&data=alti&data=mslp&year1=2023&month1=01&day1=01&year2=2025&month2=01&day2=01&tz=Etc%2FUTC&format=onlycomma&latlon=yes&elev=yes&missing=M&trace=T&direct=no&report_type=3&report_type=4",
+      "start": "2023-01-01",
+      "end": "2025-01-01",
+      "retrieved_utc": "2026-09-28T22:03:31+00:00",
+      "sha256_uncompressed": "86f0c3fffda14971672a0e6ed820c30754c918b3ab3ccbda970b7da9a5141c14",
+      "bytes": 1727601
+    }
+  },
+  "source": "Iowa Environmental Mesonet (IEM) ASOS/METAR archive, network IN__ASOS",
+  "original_producer": "India Meteorological Department (IMD) aerodrome meteorological offices (METAR/SPECI reports exchanged via WMO GTS)",
+  "api": "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py",
+  "license_note": "METAR reports are freely exchanged WMO essential data; IEM redistributes them publicly.",
+  "variables": {
+    "tmpc": "air temperature degC (METAR resolution 1 degC)",
+    "relh": "relative humidity % (IEM-derived from reported T and dew point)",
+    "alti": "altimeter setting QNH, inHg (sea-level-reduced pressure)",
+    "mslp": "sea level pressure hPa (rarely reported for India, usually M)"
+  },
+  "caveat": "These are aerodrome surface observations, not the IMD AWS network feed. They are used as a real Indian AWS-like observation stream.",
+  "empty": [
+    "VIBN"
+  ],
+  "failed": {
+    "VOGO": "HTTP Error 503: Service Unavailable"
+  }
+}

@@ -1,0 +1,20 @@
+# environments / secrets
+.venv/
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+# node / build output
+dashboard/node_modules/
+dashboard/dist/
+edge/build/
+# generated data (reproducible from data/raw + scripts)
+data/processed/
+data/benchmark/train/benchmark.csv.gz
+data/benchmark/val/benchmark.csv.gz
+data/*.db
+data/*.db-*
+data/*.sqlite*
+artifacts/scenarios/buffer_*.jsonl
+artifacts/ablation_models/
+.claude/

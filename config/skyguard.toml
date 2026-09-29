@@ -1,0 +1,92 @@
+# SkyGuard AI configuration. Every threshold used by QC, detection, severity,
+# health and maintenance logic lives here and is versioned with `config_version`.
+config_version = "1.0.0"
+feature_version = "fv1"
+
+[data]
+start = "2023-01-01"
+end = "2025-01-01"          # exclusive
+interval_minutes = 60       # canonical hourly grid (many Indian aerodromes report hourly)
+max_interpolate_slots = 2   # real gaps <= this many slots are interpolated (flagged 'interpolated')
+# Stations to fetch. Roles are assigned in [split]; nothing else in the code names a station.
+stations = [
+  { id = "VIDP" }, { id = "VIDD" }, { id = "VIAG" }, { id = "VIJP" }, { id = "VIDN" }, { id = "VICG" },
+  { id = "VIGR" }, { id = "VILK" }, { id = "VIAR" }, { id = "VILH" },
+  { id = "VABB" }, { id = "VAJJ" }, { id = "VAPO" }, { id = "VAAU" }, { id = "VAAH" }, { id = "VAID" },
+  { id = "VABP" }, { id = "VANP" },
+  { id = "VOBL" }, { id = "VOBG" }, { id = "VOMY" }, { id = "VOCB" }, { id = "VOMM" }, { id = "VOTV" },
+  { id = "VOCI" }, { id = "VOCL" }, { id = "VOML" }, { id = "VOHS" }, { id = "VOHY" }, { id = "VOTR" },
+  { id = "VOMD" }, { id = "VOPB" },
+  { id = "VECC" }, { id = "VEBS" },
+]
+
+[split]
+# Time-aware + station-aware split. Held-out stations never appear in train or
+# validation, not even as spatial neighbours.
+train_end = "2024-01-01"
+val_end = "2024-07-01"
+holdout_stations = ["VOBG", "VOTV", "VIJP", "VOPB"]
+min_completeness = 0.6      # stations below this fraction of valid slots are dropped (recorded)
+
+[injection]
+# Separate magnitude/duration profiles so the final test does not reuse the
+# training injection pattern. Seeds are also disjoint.
+train_seed = 11
+val_seed = 21
+test_seed = 9001            # unseen seed, used only for the frozen final benchmark
+events_per_station_month = 4
+warmup_days = 8             # clean history prepended to val/test so past-only features are defined
+# injected values are quantised to the source resolution (METAR: whole degC) so no precision shortcut exists
+resolution = { temperature_c = 1.0, pressure_hpa = 0.338639, relative_humidity_pct = 0.1 }  # P: 0.01 inHg altimeter step
+
+[qc]
+temperature_c = { min = -60.0, max = 60.0, max_step = 12.0 }
+pressure_hpa = { min = 850.0, max = 1090.0, max_step = 8.0 }
+relative_humidity_pct = { min = 0.0, max = 100.0, max_step = 60.0 }
+sentinels = [-9999.0, -999.0, -99.9, 9999.0, 999.9, 99999.0]
+future_tolerance_minutes = 10
+flatline_slots = 8              # identical values across all three variables for this many slots (hours)
+abnormal_gap_minutes = 90
+delayed_minutes = 60            # ingestion - observation > this => delayed (NOT an anomaly)
+
+[features]
+short_window = "4h"
+long_window = "24h"
+seasonal_window = "7D"
+min_periods = 3
+neighbor_radius_km = 300.0
+neighbor_max = 6
+neighbor_time_tolerance_minutes = 45
+
+[model]
+seed = 7
+max_false_alerts_per_station_day = 0.2   # operating-point budget used when choosing thresholds on validation
+regional_fraction = 0.6         # >= this share of neighbours moving together => regional evidence
+regional_suppression = 0.35     # probability multiplier for weather-plausible regional events
+
+[severity]
+# score = 40*p + 20*min(|z|/10,1) + 15*min(persist/6,1) + 10*(n_vars-1)/2 + 10*isolation + 5*qc_hard
+weights = { probability = 40, magnitude = 20, persistence = 15, variables = 10, isolation = 10, qc = 5 }
+thresholds = { MEDIUM = 45, HIGH = 65, CRITICAL = 82 }
+
+[health]
+window = "24h"
+# penalties are points per unit rate (0..1) within the window
+anomaly_rate = 60
+missing_rate = 40
+flatline_rate = 40
+drift = 15
+comm_gaps = 20
+status = { NORMAL = 85, WATCH = 70, DEGRADED = 50 }
+
+[maintenance]
+min_history_days = 3
+recent_days = 7
+
+[realtime]
+offline_after_minutes = 120
+buffer_rows = 400
+
+[api]
+max_batch = 5000
+max_body_bytes = 2_000_000

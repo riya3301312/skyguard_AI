@@ -1,0 +1,9 @@
+hour,station_id,kind,parameter,raw_injected,clean_value,t_live_start
+12,VOCB,spike,temperature_c,55.2,24.0,2024-08-04T10:00:00+00:00
+20,"VOCB,VOCL,VOCI,VOMD,VOTR",regional_weather_event,all,,,2024-08-04T10:00:00+00:00
+28,VOCL,isolated_event,temperature_c,,,2024-08-04T10:00:00+00:00
+36,VOCI,flatline,temperature_c,,,2024-08-04T10:00:00+00:00
+30,VOMD,drift,pressure_hpa,,,2024-08-04T10:00:00+00:00
+40,VOPB,offline_buffered,all,,,2024-08-04T10:00:00+00:00
+52,VOTR,communication_gap,all,,,2024-08-04T10:00:00+00:00
+60,VOTR,sentinel,pressure_hpa,,,2024-08-04T10:00:00+00:00

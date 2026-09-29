@@ -1,0 +1,37 @@
+{
+  "implementation": "Portable C99 library edge/firmware/skyguard_edge.c (same source as the ESP32 sketch)",
+  "hardware_tested": false,
+  "note": "No ESP32 hardware was available. Flash/RAM are measured from the RV32IMC (ESP32-C3 ISA) cross-compiled object; runtime is measured on the host CPU. Energy/power was NOT measured.",
+  "flash_bytes_rv32imc_object": {
+    "text": 886,
+    "rodata": 248,
+    "data": 0,
+    "total": 1134,
+    "excludes": "libm logf and soft-float runtime helpers (resolved at link time on target)"
+  },
+  "ram_bytes": {
+    "state_per_station": 28,
+    "config": 52,
+    "static_bss": 0,
+    "stack_worst_case_rv32": 96,
+    "stack_frames_rv32": {
+      "sg_edge_check": 64,
+      "dewpoint": 32
+    },
+    "stack_note": "sg_edge_check -> dewpoint call chain; excludes libm logf"
+  },
+  "host_runtime": {
+    "ns_per_observation": 250.5,
+    "observations": 20000,
+    "repetitions": 20,
+    "cpu": "host PC (x86-64), clang -O2"
+  },
+  "flag_rate_on_sample": 0.03085,
+  "budget": {
+    "flash_bytes": 8192,
+    "ram_bytes": 1024,
+    "host_ns_per_observation": 10000
+  },
+  "compiler": "zig cc (ziglang PyPI package, clang/LLVM)",
+  "within_budget": true
+}

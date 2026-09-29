@@ -1,0 +1,14 @@
+.venv
+.git
+**/__pycache__
+dashboard/node_modules
+dashboard/dist
+edge/build
+data/processed
+data/benchmark
+data/*.db*
+artifacts/final_evaluation
+artifacts/validation
+artifacts/scenarios
+artifacts/ablation_models
+.env

@@ -1,0 +1,273 @@
+{
+  "provisional_results_revised_after_neighbour_data": 9,
+  "run_at": "2026-09-29T00:21:17+00:00",
+  "api": "http://127.0.0.1:62841",
+  "detector_mode": "hybrid",
+  "model_version": "fv1/temporal+multivariate+spatial/2026-09-28T23:47:04+00:00",
+  "live_replay_wall_seconds": 184.76,
+  "observations_processed": 1580,
+  "processing_latency_ms": {
+    "n": 1580,
+    "p50_ms": 4.85,
+    "p95_ms": 556.5819999999999,
+    "p99_ms": 819.7206000000007,
+    "mean_ms": 116.30382278481015,
+    "max_ms": 1547.55
+  },
+  "scenarios": {
+    "A_clean_station": {
+      "passed": false,
+      "expected": "normal, no false alert",
+      "evidence": {
+        "clean_observations": 124,
+        "false_alerts": 1,
+        "false_alert_details": [
+          {
+            "station_id": "VOPB",
+            "observation_time": "2024-08-05T10:00:00+00:00",
+            "fault_pattern": "DRIFT",
+            "anomaly_probability": 0.6306306306306305
+          }
+        ]
+      }
+    },
+    "B_temperature_spike": {
+      "passed": true,
+      "expected": "anomaly, high probability, fault pattern = spike, human-readable explanation",
+      "evidence": {
+        "temperature_c": 55.2,
+        "is_anomaly": true,
+        "fault_pattern": "SPIKE",
+        "parameter": "temperature_c",
+        "anomaly_probability": 1.0,
+        "severity": "HIGH",
+        "estimated_temperature_c": 22.0,
+        "replacement_recommended": true,
+        "edge_flags": [
+          "T_SPIKE",
+          "T_RH_INCONSISTENT"
+        ],
+        "explanation": {
+          "status": "ANOMALY DETECTED",
+          "likely_fault_pattern": "Likely fault pattern: Temperature spike",
+          "pattern": "SPIKE",
+          "parameter": "temperature_c",
+          "anomaly_probability": 1.0,
+          "alert_threshold": 0.35,
+          "severity": "HIGH",
+          "detector_mode": "hybrid",
+          "evidence": [
+            "Temperature changed +31.2 \u00b0C since the previous observation (25.1x its usual rate of change).",
+            "16.7 robust deviations above this station's usual temperature for this time of day (7-day baseline 23.0 \u00b0C, observed 55.2 \u00b0C).",
+            "Nearby stations (n=4) deviated by a median -1.0 \u00b0C; this station +32.2 \u00b0C; 0% of neighbours show a similar change.",
+            "Pressure showed no comparable change (+0.0 hPa).",
+            "Temperature/RH relationship is inconsistent: RH 94% vs 18% expected if moisture were unchanged."
+          ],
+          "feature_group_contributions": [
+            [
+              "multivariate",
+              0.28
+            ],
+            [
+              "temporal_temperature",
+              0.234
+            ],
+            [
+              "spatial",
+              0.12
+            ]
+          ],
+          "note": "Observable data pattern, not a confirmed physical hardware diagnosis."
+        },
+        "clean_value": 24.0
+      }
+    },
+    "C_flatline": {
+      "passed": true,
+      "expected": "flatline/frozen pattern, not merely generic anomaly",
+      "evidence": {
+        "flatline_alerts": 3,
+        "all_alerts_in_window": {
+          "FLATLINE": 3,
+          "DRIFT": 2
+        },
+        "first_flatline_hour": 49
+      }
+    },
+    "D_gradual_drift": {
+      "passed": true,
+      "expected": "drift detected; maintenance risk may increase",
+      "evidence": {
+        "drift_or_offset_alerts": 27,
+        "first_hour": 40,
+        "patterns": {
+          "STEP_OFFSET": 15,
+          "DRIFT": 12,
+          "COMPOSITE_FAULT": 2
+        },
+        "maintenance": {
+          "risk": "HIGH",
+          "reason": "Persistent drift/offset/flatline pattern in the last 7 days and health 28/100. Inspect/recalibrate sensor."
+        },
+        "health": 27.5
+      }
+    },
+    "E_communication_failure": {
+      "passed": true,
+      "expected": "missing/communication pattern detected",
+      "evidence": {
+        "gap_alerts": [
+          {
+            "observation_time": "2024-08-06T14:00:00+00:00",
+            "explanation": {
+              "status": "ANOMALY DETECTED",
+              "likely_fault_pattern": "Likely fault pattern: missing data / communication gap",
+              "evidence": [
+                "No observations received for 5.0 h (observation-time gap). Likely pattern: missing data / communication gap."
+              ],
+              "pattern": "MISSING_COMMUNICATION",
+              "parameter": "all",
+              "detector_mode": "deterministic_qc",
+              "note": "Observable data pattern, not a confirmed physical hardware diagnosis."
+            }
+          }
+        ]
+      }
+    },
+    "F_regional_weather_event": {
+      "passed": true,
+      "expected": "regional event evidence; reduced sensor-fault false alarm",
+      "evidence": {
+        "cluster_observations": 30,
+        "sensor_fault_alerts": 0,
+        "alerts": [],
+        "rows_with_regional_evidence": 1,
+        "suppressed_regional_alerts_logged": 0,
+        "max_probability": 0.3250883392226148
+      }
+    },
+    "G_isolated_station_event": {
+      "passed": true,
+      "expected": "spatial inconsistency; higher sensor-fault likelihood than the regional event",
+      "evidence": {
+        "alerts": [
+          {
+            "hour": 30,
+            "fault_pattern": "SPATIAL_INCONSISTENCY",
+            "anomaly_probability": 0.7457627118644068,
+            "severity": "MEDIUM"
+          }
+        ],
+        "max_probability_isolated": 0.7457627118644068,
+        "max_probability_regional": 0.3250883392226148,
+        "evidence_example": [
+          "2.6 robust deviations above this station's usual temperature for this time of day (7-day baseline 24.0 \u00b0C, observed 31.0 \u00b0C).",
+          "Nearby stations (n=3) deviated by a median +1.0 \u00b0C; this station +7.0 \u00b0C; 0% of neighbours show a similar change.",
+          "Pressure showed no comparable change (+0.6 hPa)."
+        ]
+      }
+    },
+    "H_held_out_station": {
+      "passed": true,
+      "expected": "reasonable generalisation",
+      "evidence": {
+        "final_eval_held_out": {
+          "precision": 0.8004750593824228,
+          "recall": 0.5466342254663422,
+          "f1": 0.6496385542168674,
+          "pr_auc": 0.717260909663342,
+          "false_alerts_per_station_day": 0.2291950886766712
+        },
+        "final_eval_seen": {
+          "precision": 0.8032249248428532,
+          "recall": 0.47024,
+          "f1": 0.5931981027348875,
+          "pr_auc": 0.6613720282571728,
+          "false_alerts_per_station_day": 0.21891152325934934
+        },
+        "criterion": "held-out F1 >= 70% of seen-station F1"
+      }
+    },
+    "I_offline_remote_station": {
+      "passed": true,
+      "expected": "buffer -> reconnect -> sync, no data loss",
+      "evidence": {
+        "probe": {
+          "station": "VOPB",
+          "status_during_outage": "GRAY",
+          "label": "Offline",
+          "buffered_on_station": 5
+        },
+        "records_generated_during_outage": 7,
+        "records_received_after_reconnect": 7,
+        "lag_minutes": [
+          420.0,
+          360.0,
+          300.0,
+          240.0,
+          180.0,
+          120.0,
+          60.0
+        ],
+        "records_older_than_delay_threshold_marked_delayed": true,
+        "alerts_on_buffered_records": 0,
+        "max_buffer": 7,
+        "client_stats": {
+          "observed": 72,
+          "sent": 72,
+          "send_failures": 0,
+          "max_buffered": 7,
+          "batches": 66
+        }
+      }
+    },
+    "J_edge": {
+      "passed": true,
+      "expected": "lightweight checks execute within reported resource budget",
+      "evidence": {
+        "mode": "faithful simulation: same C source compiled for host and called via ctypes; not run on ESP32 hardware",
+        "spike_edge_flags": [
+          "T_SPIKE",
+          "T_RH_INCONSISTENT"
+        ],
+        "sentinel_edge_flags": [
+          "P_RANGE"
+        ],
+        "edge_metrics": {
+          "flash_bytes_rv32imc_object": {
+            "text": 886,
+            "rodata": 248,
+            "data": 0,
+            "total": 1134,
+            "excludes": "libm logf and soft-float runtime helpers (resolved at link time on target)"
+          },
+          "ram_bytes": {
+            "state_per_station": 28,
+            "config": 52,
+            "static_bss": 0,
+            "stack_worst_case_rv32": 96,
+            "stack_frames_rv32": {
+              "sg_edge_check": 64,
+              "dewpoint": 32
+            },
+            "stack_note": "sg_edge_check -> dewpoint call chain; excludes libm logf"
+          },
+          "host_runtime": {
+            "ns_per_observation": 250.5,
+            "observations": 20000,
+            "repetitions": 20,
+            "cpu": "host PC (x86-64), clang -O2"
+          },
+          "budget": {
+            "flash_bytes": 8192,
+            "ram_bytes": 1024,
+            "host_ns_per_observation": 10000
+          },
+          "within_budget": true
+        }
+      }
+    }
+  },
+  "passed": 9,
+  "total": 10
+}

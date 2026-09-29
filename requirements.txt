@@ -1,0 +1,15 @@
+# Runtime
+numpy==2.5.3
+pandas==3.0.6
+scikit-learn==1.9.1
+scipy==1.18.1
+joblib==1.6.0
+fastapi==0.141.1
+uvicorn[standard]==0.54.0
+pydantic==2.13.5
+psutil==7.2.2
+matplotlib==3.11.2
+httpx==0.28.1
+# Edge build (C compiler: zig cc) and tests
+ziglang==0.16.0
+pytest==9.1.1
