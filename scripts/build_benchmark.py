@@ -69,6 +69,7 @@ def main() -> None:
         "train": (seen, None, train_end, inj["train_seed"], "train"),
         "val": (seen, train_end, val_end, inj["val_seed"], "val"),
         "final_eval": (all_st, val_end, None, inj["test_seed"], "test"),
+        "final_eval_v2": (all_st, val_end, None, inj["test_seed_v2"], "test"),
     }
     for name, (sts, t0, t1, seed, profile) in specs.items():
         d = BENCH / name
@@ -76,11 +77,11 @@ def main() -> None:
         out, events = make_split(clean, sts, t0, t1, seed, profile, cfg, wd)
         body, digest = to_gz_bytes(out)
         manifest_path = d / "MANIFEST.json"
-        if name == "final_eval" and manifest_path.exists() and json.loads(manifest_path.read_text()).get("frozen"):
+        if name.startswith("final_eval") and manifest_path.exists() and json.loads(manifest_path.read_text()).get("frozen"):
             man = json.loads(manifest_path.read_text())
             ok = man["sha256_uncompressed_csv"] == digest
             on_disk = hashlib.sha256(gzip.decompress((d / "benchmark.csv.gz").read_bytes())).hexdigest()
-            print(f"final_eval is FROZEN (since {man['frozen_at']}); regenerated hash matches: {ok}; "
+            print(f"{name} is FROZEN (since {man['frozen_at']}); regenerated hash matches: {ok}; "
                   f"on-disk hash matches: {on_disk == man['sha256_uncompressed_csv']}. Not overwritten.")
             if not (ok and on_disk == man["sha256_uncompressed_csv"]):
                 raise SystemExit("frozen benchmark integrity check FAILED")
@@ -90,7 +91,7 @@ def main() -> None:
         ev = out[out["split_role"] == "eval"]
         man = {
             "split": name, "seed": seed, "injection_profile": profile, "stations": sts,
-            "held_out_stations": holdout if name == "final_eval" else [],
+            "held_out_stations": holdout if name.startswith("final_eval") else [],
             "period_start": str(t0) if t0 is not None else str(out["timestamp"].min()),
             "period_end": str(t1) if t1 is not None else str(out["timestamp"].max()),
             "warmup_days": wd if t0 is not None else 0, "rows": int(len(out)), "eval_rows": int(len(ev)),
@@ -100,12 +101,12 @@ def main() -> None:
             "sha256_uncompressed_csv": digest, "config_version": cfg["config_version"],
             "feature_version": cfg["feature_version"],
         }
-        if name == "final_eval":
+        if name.startswith("final_eval"):
             man["frozen"] = True
             man["frozen_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
             man["note"] = "Frozen before model training/selection. Never used for tuning."
         manifest_path.write_text(json.dumps(man, indent=2))
-        if name == "final_eval":
+        if name.startswith("final_eval"):
             for f in (d / "benchmark.csv.gz", d / "events.csv", manifest_path):
                 os.chmod(f, stat.S_IREAD | stat.S_IRGRP | stat.S_IROTH)  # read-only guard
         print(f"{name}: {len(out)} rows ({len(ev)} eval), {int(ev['is_anomaly'].sum())} anomalous, "

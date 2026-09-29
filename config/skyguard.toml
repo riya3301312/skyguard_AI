@@ -33,7 +33,8 @@ min_completeness = 0.6      # stations below this fraction of valid slots are dr
 # training injection pattern. Seeds are also disjoint.
 train_seed = 11
 val_seed = 21
-test_seed = 9001            # unseen seed, used only for the frozen final benchmark
+test_seed = 9001            # v1 frozen final benchmark (evaluated once; historical)
+test_seed_v2 = 9002         # v2 frozen final benchmark: frozen BEFORE the hardening pass, evaluated once afterwards
 events_per_station_month = 4
 warmup_days = 8             # clean history prepended to val/test so past-only features are defined
 # injected values are quantised to the source resolution (METAR: whole degC) so no precision shortcut exists
